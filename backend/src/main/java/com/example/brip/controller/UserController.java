@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.brip.service.EmailService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
 @Controller
 @RestController
 @RequestMapping("/api/user")
@@ -26,6 +27,9 @@ public class UserController {
     
     @Autowired
     private HttpSession httpSession;
+
+   @Autowired
+   private EmailService emailService;
 
     //회원가입: 닉네임 중복체크
     @PostMapping("/check-nickname")
@@ -133,5 +137,45 @@ public class UserController {
           response.put("message", "로그인 처리 중 오류가 발생했습니다.");
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
       }
+    }    
+
+    //비번찾기 : 인증코드 발송
+    @PostMapping("/send-verification")
+    public ResponseEntity<Map<String, String>> sendVerification(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            String email = request.get("email");
+            emailService.sendVerificationEmail(email);
+            
+            response.put("result", "success");
+            response.put("message", "인증코드가 발송되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "인증코드 발송 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    // 비번찾기 : 인증코드 인증
+    @PostMapping("/verify-code")
+    public ResponseEntity<Map<String, String>> verifyCode(@RequestBody Map<String, String> request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            String email = request.get("email");
+            String code = request.get("code");
+ 
+            if (emailService.verifyCode(email, code)) {
+                response.put("result", "success");
+                response.put("message", "인증이 완료되었습니다.");
+            } else {
+                response.put("result", "fail");
+                response.put("message", "잘못된 인증코드입니다.");
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "인증 처리 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }    
 }
