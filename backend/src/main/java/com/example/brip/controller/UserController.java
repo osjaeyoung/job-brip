@@ -125,7 +125,8 @@ public class UserController {
           // 세션에 사용자 정보 저장
           //httpSession.setAttribute("userId", user.get("id"));
           //httpSession.setAttribute("email", user.get("email"));
-          
+          //보안처리 필요????? ...
+
           response.put("result", "success");
           response.put("message", "로그인 성공");
           response.put("userId", user.get("id").toString());
@@ -177,5 +178,39 @@ public class UserController {
             response.put("message", "인증 처리 중 오류가 발생했습니다.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    } 
+    
+    //비밀번호 변경기능
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
+       Map<String, String> response = new HashMap<>();
+       try {
+           String email = request.get("email");
+           String newPassword = request.get("password");
+    
+           BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+           String encodedPassword = encoder.encode(newPassword);
+    
+           Map<String, Object> params = new HashMap<>();
+           params.put("email", email);
+           params.put("password", encodedPassword);
+    
+           //보안처리 필요?????...
+
+           int result = sqlSession.update("user.updatePassword", params);
+           
+           if (result > 0) {
+               response.put("result", "success");
+               response.put("message", "비밀번호가 변경되었습니다.");
+           } else {
+               response.put("result", "fail");
+               response.put("message", "비밀번호 변경에 실패했습니다.");
+           }
+           return ResponseEntity.ok(response);
+       } catch (Exception e) {
+           response.put("result", "fail");
+           response.put("message", "오류가 발생했습니다.");
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+       }
     }    
 }

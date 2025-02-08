@@ -27,6 +27,9 @@ public class EmailService {
        message.setTo(email);
        message.setSubject("인증 코드");
        message.setText("인증 코드: " + code);
+       //메일코드 폼 입혀야함
+       //....
+       
        mailSender.send(message);
    }
 
