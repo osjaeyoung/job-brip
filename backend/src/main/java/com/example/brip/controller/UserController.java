@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 @Controller
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping(value = "/api/user", produces = "application/json;charset=UTF-8")
 public class UserController {
     @Autowired
     SqlSession sqlSession;
@@ -35,6 +35,11 @@ public class UserController {
    @Autowired
    private EmailService emailService;
 
+   @PostMapping("/sample")
+    public void sample() {
+
+      System.out.println("sample Test");
+    }
     //회원가입: 닉네임 중복체크
     @PostMapping("/check-nickname")
     public ResponseEntity<Map<String, String>> checkNickname(@RequestBody Map<String, String> payload) {
@@ -70,7 +75,18 @@ public class UserController {
     //회원가입
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Map<String, Object> userData) {
-      Map<String, String> response = new HashMap<>();   
+      Map<String, String> response = new HashMap<>();  
+      
+      // 필수 필드 유효성 검사
+      String[] requiredFields = {"name", "nickname", "email", "password"};
+      for (String field : requiredFields) {
+          if (userData.get(field) == null || userData.get(field).toString().trim().isEmpty()) {
+              response.put("result", "fail");
+              response.put("message", field + "은(는) 필수 입력값입니다.");
+              return ResponseEntity.badRequest().body(response);
+          }
+      }
+
       try {
         // 이메일 중복 체크
         Integer emailCount = sqlSession.selectOne("user.countByEmail", userData.get("email"));
@@ -135,7 +151,7 @@ public class UserController {
             user.get("id").toString()
           );
           System.out.println("token:"+token);
-          
+
           response.put("result", "success");
           response.put("message", "로그인 성공");
           response.put("userId", user.get("id").toString());
