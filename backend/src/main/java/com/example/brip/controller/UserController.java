@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.brip.config.JwtTokenProvider;
 import com.example.brip.service.EmailService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,9 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
     @Autowired
     SqlSession sqlSession;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     
     @Autowired
     private HttpSession httpSession;
@@ -126,11 +130,17 @@ public class UserController {
           //httpSession.setAttribute("userId", user.get("id"));
           //httpSession.setAttribute("email", user.get("email"));
           //보안처리 필요????? ...
-
+          // Generate JWT token
+          String token = jwtTokenProvider.generateToken(
+            user.get("id").toString()
+          );
+          System.out.println("token:"+token);
+          
           response.put("result", "success");
           response.put("message", "로그인 성공");
           response.put("userId", user.get("id").toString());
           response.put("email", user.get("email").toString());
+          response.put("token", token);
           return ResponseEntity.ok(response);
           
       } catch (Exception e) {
