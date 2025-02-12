@@ -27,3 +27,54 @@ CREATE TABLE chat_messages (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (room_id) REFERENCES chat_rooms(room_id)
 );
+
+<게시글>
+-- 게시글 테이블
+CREATE TABLE posts (
+    post_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    category ENUM('노하우&Q&A', '실시간채팅', '업종별/연차별', '정보공유') NOT NULL COMMENT '게시글 카테고리',
+    user_id BIGINT NOT NULL COMMENT '작성자 ID',
+    title VARCHAR(200) NOT NULL COMMENT '게시글 제목',
+    content TEXT NOT NULL COMMENT '게시글 내용',
+    view_count INT DEFAULT 0 COMMENT '조회수',
+    heart_count INT DEFAULT 0 COMMENT '좋아요 수',
+    comment_count INT DEFAULT 0 COMMENT '댓글 수',
+    is_deleted BOOLEAN DEFAULT FALSE COMMENT '삭제 여부',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '작성 시간',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정 시간',
+    INDEX idx_category_created (category, created_at DESC)
+);
+
+-- 게시글 좋아요 테이블
+CREATE TABLE post_hearts (
+    heart_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    post_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL COMMENT '좋아요 누른 사용자 ID',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    UNIQUE KEY unique_post_user (post_id, user_id) COMMENT '중복 좋아요 방지'
+);
+
+-- 게시글 신고 테이블
+CREATE TABLE post_reports (
+    report_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    post_id BIGINT NOT NULL,
+    reporter_id BIGINT NOT NULL COMMENT '신고한 사용자 ID',
+    report_reason VARCHAR(500) NOT NULL COMMENT '신고 사유',
+    status VARCHAR(20) DEFAULT 'PENDING' COMMENT '처리상태 (PENDING, PROCESSED, REJECTED)',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed_at TIMESTAMP NULL COMMENT '처리 시간',
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+);
+
+-- 댓글 테이블
+CREATE TABLE comments (
+    comment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    post_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL COMMENT '작성자 ID',
+    content TEXT NOT NULL COMMENT '댓글 내용',
+    is_deleted BOOLEAN DEFAULT FALSE COMMENT '삭제 여부',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+);

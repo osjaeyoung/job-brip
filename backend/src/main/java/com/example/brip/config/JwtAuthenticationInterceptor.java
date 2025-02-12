@@ -29,7 +29,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             response.getWriter().write("{\"message\": \"인증이 필요합니다.\"}");
             return false;
         }
-
         // Bearer 제거
         token = token.substring(7);
 

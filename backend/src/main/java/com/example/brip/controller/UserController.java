@@ -38,13 +38,13 @@ public class UserController {
    @Autowired
    private EmailService emailService;
 
-   @Operation(summary = "샘플 API", description = "테스트용 샘플 API입니다. token필요")
    @PostMapping("/sample")
-    public void sample() {
-      System.out.println("sample Test");
+    public void sample(HttpServletRequest request) {
+      String userId = (String) request.getAttribute("userId");
+      System.out.println("sample Test userId:"+userId);
     }
+
     //회원가입: 닉네임 중복체크
-    @Operation(summary = "닉네임 중복 체크", description = "사용자가 입력한 닉네임이 중복되는지 확인합니다.")
     @PostMapping("/check-nickname")    
     public ResponseEntity<Map<String, String>> checkNickname(@RequestBody Map<String, String> payload) {
        Map<String, String> response = new HashMap<>();
@@ -77,7 +77,6 @@ public class UserController {
     }
 
     //회원가입
-    @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Map<String, Object> userData) {
       Map<String, String> response = new HashMap<>();  
@@ -122,7 +121,6 @@ public class UserController {
     }    
 
     //로그인
-    @Operation(summary = "로그인", description = "이메일과 비밀번호를 사용하여 로그인합니다.")   
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, Object> loginData, HttpServletRequest request) {
       Map<String, String> response = new HashMap<>();
@@ -272,6 +270,7 @@ public class UserController {
         }
     } 
     
+    //보안코드 필요해보임
     //비밀번호 변경기능
     @PostMapping("/reset-password")
     public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
@@ -323,15 +322,10 @@ public class UserController {
             params.put("email", email);
             params.put("password", encodedPassword);
 
-            int result = sqlSession.update("user.updatePassword", params);
+            sqlSession.update("user.updatePassword", params);
+            response.put("result", "success");
+            response.put("message", "비밀번호가 변경되었습니다.");
             
-            if (result > 0) {
-                response.put("result", "success");
-                response.put("message", "비밀번호가 변경되었습니다.");
-            } else {
-                response.put("result", "fail");
-                response.put("message", "비밀번호 변경에 실패했습니다.");
-            }
             return ResponseEntity.ok(response);
             
         } catch (Exception e) {
