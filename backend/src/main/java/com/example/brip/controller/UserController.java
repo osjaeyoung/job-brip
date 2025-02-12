@@ -125,6 +125,26 @@ public class UserController {
           String email = (String) loginData.get("email");
           String password = (String) loginData.get("password");
 
+          // 입력값 검증
+          if (email == null || email.trim().isEmpty()) {
+              response.put("result", "fail");
+              response.put("message", "이메일을 입력해주세요.");
+              return ResponseEntity.badRequest().body(response);
+          }
+
+          if (password == null || password.trim().isEmpty()) {
+              response.put("result", "fail");
+              response.put("message", "비밀번호를 입력해주세요.");
+              return ResponseEntity.badRequest().body(response);
+          }
+
+          // 이메일 형식 검증
+          if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+              response.put("result", "fail");
+              response.put("message", "올바른 이메일 형식이 아닙니다.");
+              return ResponseEntity.badRequest().body(response);
+          }
+
           // 이메일로 사용자 조회
           Map<String, Object> user = sqlSession.selectOne("user.getUserByEmail", email);
           
@@ -145,7 +165,6 @@ public class UserController {
           // 세션에 사용자 정보 저장
           //httpSession.setAttribute("userId", user.get("id"));
           //httpSession.setAttribute("email", user.get("email"));
-          //보안처리 필요????? ...
           // Generate JWT token
           String token = jwtTokenProvider.generateToken(
             user.get("id").toString()
@@ -172,6 +191,29 @@ public class UserController {
         Map<String, String> response = new HashMap<>();
         try {
             String email = request.get("email");
+            
+            // 입력값 검증
+            if (email == null || email.trim().isEmpty()) {
+              response.put("result", "fail");
+              response.put("message", "이메일을 입력해주세요.");
+              return ResponseEntity.badRequest().body(response);
+            }
+
+            // 이메일 형식 검증
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                response.put("result", "fail");
+                response.put("message", "올바른 이메일 형식이 아닙니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 이메일 존재 여부 확인
+            Integer userExists = sqlSession.selectOne("user.countByEmail", email);
+            if (userExists == 0) {
+                response.put("result", "fail");
+                response.put("message", "등록되지 않은 이메일입니다.");
+                return ResponseEntity.ok(response);
+            }
+
             emailService.sendVerificationEmail(email);
             
             response.put("result", "success");
@@ -190,7 +232,25 @@ public class UserController {
         try {
             String email = request.get("email");
             String code = request.get("code");
- 
+            // 이메일 유효성 검사
+            if (email == null || email.trim().isEmpty()) {
+              response.put("result", "fail");
+              response.put("message", "이메일을 입력해주세요.");
+              return ResponseEntity.badRequest().body(response);
+            }
+            // 이메일 형식 검사
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                response.put("result", "fail");
+                response.put("message", "올바른 이메일 형식이 아닙니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+            // 인증코드 유효성 검사
+            if (code == null || code.trim().isEmpty()) {
+                response.put("result", "fail");
+                response.put("message", "인증코드를 입력해주세요.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
             if (emailService.verifyCode(email, code)) {
                 response.put("result", "success");
                 response.put("message", "인증이 완료되었습니다.");
@@ -209,34 +269,69 @@ public class UserController {
     //비밀번호 변경기능
     @PostMapping("/reset-password")
     public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
-       Map<String, String> response = new HashMap<>();
-       try {
-           String email = request.get("email");
-           String newPassword = request.get("password");
-    
-           BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-           String encodedPassword = encoder.encode(newPassword);
-    
-           Map<String, Object> params = new HashMap<>();
-           params.put("email", email);
-           params.put("password", encodedPassword);
-    
-           //보안처리 필요?????...
+        Map<String, String> response = new HashMap<>();
+        try {
+            // 필수 입력값 검증
+            String email = request.get("email");
+            String newPassword = request.get("password");
 
-           int result = sqlSession.update("user.updatePassword", params);
-           
-           if (result > 0) {
-               response.put("result", "success");
-               response.put("message", "비밀번호가 변경되었습니다.");
-           } else {
-               response.put("result", "fail");
-               response.put("message", "비밀번호 변경에 실패했습니다.");
-           }
-           return ResponseEntity.ok(response);
-       } catch (Exception e) {
-           response.put("result", "fail");
-           response.put("message", "오류가 발생했습니다.");
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-       }
-    }    
+            // null 체크 및 빈 문자열 체크
+            if (email == null || email.trim().isEmpty()) {
+                response.put("result", "fail");
+                response.put("message", "이메일을 입력해주세요.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            if (newPassword == null || newPassword.trim().isEmpty()) {
+                response.put("result", "fail");
+                response.put("message", "새로운 비밀번호를 입력해주세요.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 이메일 형식 검증 (선택적)
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                response.put("result", "fail");
+                response.put("message", "올바른 이메일 형식이 아닙니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 비밀번호 유효성 검사 (예: 최소 8자, 영문/숫자/특수문자 포함)
+            if (!newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")) {
+                response.put("result", "fail");
+                response.put("message", "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 이메일 존재 여부 확인
+            Integer userExists = sqlSession.selectOne("user.countByEmail", email);
+            if (userExists == 0) {
+                response.put("result", "fail");
+                response.put("message", "존재하지 않는 이메일입니다.");
+                return ResponseEntity.ok(response);
+            }
+
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode(newPassword);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", encodedPassword);
+
+            int result = sqlSession.update("user.updatePassword", params);
+            
+            if (result > 0) {
+                response.put("result", "success");
+                response.put("message", "비밀번호가 변경되었습니다.");
+            } else {
+                response.put("result", "fail");
+                response.put("message", "비밀번호 변경에 실패했습니다.");
+            }
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    } 
 }
