@@ -34,7 +34,7 @@ CREATE TABLE posts (
     post_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     category ENUM('노하우&Q&A', '실시간채팅', '업종별/연차별', '정보공유') NOT NULL COMMENT '게시글 카테고리',
     user_id BIGINT NOT NULL COMMENT '작성자 ID',
-    title VARCHAR(200) NOT NULL COMMENT '게시글 제목',
+    img_url VARCHAR(500) COMMENT '대표 이미지 URL',
     content TEXT NOT NULL COMMENT '게시글 내용',
     view_count INT DEFAULT 0 COMMENT '조회수',
     heart_count INT DEFAULT 0 COMMENT '좋아요 수',

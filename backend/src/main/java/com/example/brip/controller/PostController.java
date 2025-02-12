@@ -49,14 +49,14 @@ public class PostController {
             System.out.println("Received postData: " + postData);
     
             // 입력값 직접 확인
-            String title = String.valueOf(postData.get("title"));
+            String imgUrl = String.valueOf(postData.get("imgUrl"));
             String content = String.valueOf(postData.get("content"));
             String category = String.valueOf(postData.get("category"));
     
             // 데이터 새로 구성
             Map<String, Object> params = new HashMap<>();
             params.put("userId", userId);
-            params.put("title", title);
+            params.put("imgUrl", imgUrl);
             params.put("content", content);
             params.put("category", category);
     
@@ -88,7 +88,7 @@ public class PostController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            if (postData.get("title") == null || postData.get("title").toString().trim().isEmpty()) {
+            if (postData.get("imgUrl") == null || postData.get("imgUrl").toString().trim().isEmpty()) {
                 response.put("result", "fail");
                 response.put("message", "제목을 입력해주세요.");
                 return ResponseEntity.badRequest().body(response);
