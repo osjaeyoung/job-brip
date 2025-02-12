@@ -173,7 +173,7 @@ public class UserController {
 
           response.put("result", "success");
           response.put("message", "로그인 성공");
-          response.put("userId", user.get("id").toString());
+          //response.put("userId", user.get("id").toString());
           response.put("email", user.get("email").toString());
           response.put("token", token);
           return ResponseEntity.ok(response);
