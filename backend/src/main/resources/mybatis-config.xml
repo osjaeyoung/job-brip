@@ -19,6 +19,6 @@
     </settings>
     <typeAliases>
         <!-- 빈을 찾도록 패키지를 명시 -->
-        <package name="com.example.sgame.model"/>
+        <package name="com.example.brip"/>
     </typeAliases>
 </configuration>

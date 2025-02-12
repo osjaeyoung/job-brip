@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.post">
+    <!-- 게시글 작성 -->
+    <insert id="insertPost" parameterType="map" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO posts (
+            category,
+            user_id,
+            title,
+            content
+        ) VALUES (
+            #{category},
+            #{userId},
+            #{title},
+            #{content}
+        )
+    </insert>
+
+    <!-- 게시글 목록 조회 -->
+    <select id="getPosts" parameterType="map" resultType="map">
+        SELECT 
+            p.*,
+            u.nickname as author_nickname,
+            TIMESTAMPDIFF(SECOND, p.created_at, NOW()) as time_diff,
+            LEFT(p.content, 200) as content_preview
+        FROM posts p
+        JOIN users u ON p.user_id = u.id
+        WHERE p.is_deleted = FALSE
+        <if test="category != null and category != ''">
+            AND p.category = #{category}
+        </if>
+        ORDER BY p.created_at DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 게시글 총 개수 조회 -->
+    <select id="getPostsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM posts
+        WHERE is_deleted = FALSE
+        <if test="category != null and category != ''">
+            AND category = #{category}
+        </if>
+    </select>
+
+    <!-- 게시글 상세 조회 -->
+    <select id="getPostById" parameterType="map" resultType="map">
+        SELECT 
+            p.*,
+            u.nickname as author_nickname
+        FROM posts p
+        JOIN users u ON p.user_id = u.id
+        WHERE p.post_id = #{postId}
+    </select>
+
+    <!-- 조회수 증가 -->
+    <update id="increaseViewCount" parameterType="map">
+        UPDATE posts
+        SET view_count = view_count + 1
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 게시글 수정 -->
+    <update id="updatePost" parameterType="map">
+        UPDATE posts
+        SET 
+            title = #{title},
+            content = #{content},
+            category = #{category},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 게시글 삭제 (소프트 삭제) -->
+    <update id="softDeletePost" parameterType="map">
+        UPDATE posts
+        SET 
+            is_deleted = TRUE,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 좋아요 조회 -->
+    <select id="getHeart" parameterType="map" resultType="map">
+        SELECT *
+        FROM post_hearts
+        WHERE post_id = #{postId}
+        AND user_id = #{userId}
+    </select>
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertHeart" parameterType="map">
+        INSERT INTO post_hearts (
+            post_id,
+            user_id
+        ) VALUES (
+            #{postId},
+            #{userId}
+        )
+    </insert>
+
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteHeart" parameterType="map">
+        DELETE FROM post_hearts
+        WHERE post_id = #{postId}
+        AND user_id = #{userId}
+    </delete>
+
+    <!-- 좋아요 수 증가 -->
+    <update id="incrementHeartCount" parameterType="map">
+        UPDATE posts
+        SET heart_count = heart_count + 1
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 좋아요 수 감소 -->
+    <update id="decrementHeartCount" parameterType="map">
+        UPDATE posts
+        SET heart_count = heart_count - 1
+        WHERE post_id = #{postId}
+        AND heart_count > 0
+    </update>
+
+    <!-- 기존 신고 확인 -->
+    <select id="getExistingReport" parameterType="map" resultType="map">
+        SELECT *
+        FROM post_reports
+        WHERE post_id = #{postId}
+        AND reporter_id = #{reporterId}
+        AND status != 'REJECTED'
+    </select>
+
+    <!-- 신고 저장 -->
+    <insert id="insertReport" parameterType="map">
+        INSERT INTO post_reports (
+            post_id,
+            reporter_id,
+            report_reason,
+            status,
+            created_at
+        ) VALUES (
+            #{postId},
+            #{reporterId},
+            #{reportReason},
+            'PENDING',
+            CURRENT_TIMESTAMP
+        )
+    </insert>    
+    <!-- 댓글 관련 쿼리 -->
+
+    <!-- 댓글 작성 -->
+    <insert id="insertComment" parameterType="map" useGeneratedKeys="true" keyProperty="commentId">
+        INSERT INTO comments (
+            post_id,
+            user_id,
+            content
+        ) VALUES (
+            #{postId},
+            #{userId},
+            #{content}
+        )
+    </insert>
+
+    <!-- 게시글의 댓글 목록 조회 -->
+    <select id="getCommentsByPostId" parameterType="map" resultType="map">
+        SELECT 
+            c.*,
+            u.nickname as author_nickname
+        FROM comments c
+        JOIN users u ON c.user_id = u.id
+        WHERE c.post_id = #{postId}
+        AND c.is_deleted = FALSE
+        ORDER BY c.created_at ASC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <!-- 댓글 총 개수 조회 -->
+    <select id="getCommentsCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM comments
+        WHERE post_id = #{postId}
+        AND is_deleted = FALSE
+    </select>
+
+    <!-- 댓글 상세 조회 -->
+    <select id="getCommentById" parameterType="map" resultType="map">
+        SELECT 
+            c.*,
+            u.nickname as author_nickname
+        FROM comments c
+        JOIN users u ON c.user_id = u.id
+        WHERE c.comment_id = #{commentId}
+        AND c.is_deleted = FALSE
+    </select>
+
+    <!-- 댓글 수정 -->
+    <update id="updateComment" parameterType="map">
+        UPDATE comments
+        SET 
+            content = #{content},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE comment_id = #{commentId}
+        AND user_id = #{userId}
+    </update>
+
+    <!-- 댓글 삭제 (소프트 삭제) -->
+    <update id="softDeleteComment" parameterType="map">
+        UPDATE comments
+        SET 
+            is_deleted = TRUE,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE comment_id = #{commentId}
+        AND user_id = #{userId}
+    </update>
+
+    <!-- 게시글의 댓글 수 증가 -->
+    <update id="incrementCommentCount" parameterType="map">
+        UPDATE posts
+        SET comment_count = comment_count + 1
+        WHERE post_id = #{postId}
+    </update>
+
+    <!-- 게시글의 댓글 수 감소 -->
+    <update id="decrementCommentCount" parameterType="map">
+        UPDATE posts
+        SET comment_count = comment_count - 1
+        WHERE post_id = #{postId}
+        AND comment_count > 0
+    </update>    
+</mapper>

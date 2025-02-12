@@ -67,14 +67,29 @@ CREATE TABLE post_reports (
     FOREIGN KEY (post_id) REFERENCES posts(post_id)
 );
 
--- 댓글 테이블
+-- 댓글, 대댓글
 CREATE TABLE comments (
     comment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     post_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL COMMENT '작성자 ID',
+    parent_id BIGINT DEFAULT NULL COMMENT '부모 댓글 ID (대댓글인 경우)',
     content TEXT NOT NULL COMMENT '댓글 내용',
     is_deleted BOOLEAN DEFAULT FALSE COMMENT '삭제 여부',
+    likes_count INT DEFAULT 0 COMMENT '좋아요 수',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (parent_id) REFERENCES comments(comment_id)
+);
+
+-- 좋아요 테이블 추가
+CREATE TABLE comment_likes (
+    like_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    comment_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_like (comment_id, user_id),
+    FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

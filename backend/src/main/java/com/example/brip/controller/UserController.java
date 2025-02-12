@@ -59,7 +59,7 @@ public class UserController {
                return ResponseEntity.ok(response);
            }
            
-           Integer count = sqlSession.selectOne("user.countByNickname", nickname);
+           Integer count = sqlSession.selectOne("org.mybatis.user.countByNickname", nickname);
            if (count == 0) {
                response.put("result", "success");
                response.put("message", "사용 가능한 닉네임입니다.");
@@ -93,7 +93,7 @@ public class UserController {
 
       try {
         // 이메일 중복 체크
-        Integer emailCount = sqlSession.selectOne("user.countByEmail", userData.get("email"));
+        Integer emailCount = sqlSession.selectOne("org.mybatis.user.countByEmail", userData.get("email"));
         if (emailCount > 0) {
             response.put("result", "fail");
             response.put("message", "이미 등록된 이메일입니다.");
@@ -108,7 +108,7 @@ public class UserController {
         //System.out.println("Encoded password: " + encodedPassword);
          
         userData.put("password", encodedPassword);
-        sqlSession.insert("user.insertUser", userData);
+        sqlSession.insert("org.mybatis.user.insertUser", userData);
         response.put("result", "success");
         response.put("message", "회원가입이 완료되었습니다.");
         return ResponseEntity.ok(response);
@@ -150,7 +150,7 @@ public class UserController {
           }
 
           // 이메일로 사용자 조회
-          Map<String, Object> user = sqlSession.selectOne("user.getUserByEmail", email);
+          Map<String, Object> user = sqlSession.selectOne("org.mybatis.user.getUserByEmail", email);
           
           if (user == null) {
               response.put("result", "fail");
@@ -211,7 +211,7 @@ public class UserController {
             }
 
             // 이메일 존재 여부 확인
-            Integer userExists = sqlSession.selectOne("user.countByEmail", email);
+            Integer userExists = sqlSession.selectOne("org.mybatis.user.countByEmail", email);
             if (userExists == 0) {
                 response.put("result", "fail");
                 response.put("message", "등록되지 않은 이메일입니다.");
@@ -308,7 +308,7 @@ public class UserController {
             }
 
             // 이메일 존재 여부 확인
-            Integer userExists = sqlSession.selectOne("user.countByEmail", email);
+            Integer userExists = sqlSession.selectOne("org.mybatis.user.countByEmail", email);
             if (userExists == 0) {
                 response.put("result", "fail");
                 response.put("message", "존재하지 않는 이메일입니다.");
@@ -322,7 +322,7 @@ public class UserController {
             params.put("email", email);
             params.put("password", encodedPassword);
 
-            sqlSession.update("user.updatePassword", params);
+            sqlSession.update("org.mybatis.user.updatePassword", params);
             response.put("result", "success");
             response.put("message", "비밀번호가 변경되었습니다.");
             
