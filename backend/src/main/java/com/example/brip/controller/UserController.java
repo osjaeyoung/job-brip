@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.brip.config.JwtTokenProvider;
 import com.example.brip.service.EmailService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 @Controller
 @RestController
 @RequestMapping(value = "/api/user", produces = "application/json;charset=UTF-8")
+@Tag(name = "User API", description = "사용자 관련 API")
 public class UserController {
     @Autowired
     SqlSession sqlSession;
@@ -35,13 +38,14 @@ public class UserController {
    @Autowired
    private EmailService emailService;
 
+   @Operation(summary = "샘플 API", description = "테스트용 샘플 API입니다. token필요")
    @PostMapping("/sample")
     public void sample() {
-
       System.out.println("sample Test");
     }
     //회원가입: 닉네임 중복체크
-    @PostMapping("/check-nickname")
+    @Operation(summary = "닉네임 중복 체크", description = "사용자가 입력한 닉네임이 중복되는지 확인합니다.")
+    @PostMapping("/check-nickname")    
     public ResponseEntity<Map<String, String>> checkNickname(@RequestBody Map<String, String> payload) {
        Map<String, String> response = new HashMap<>();
        try {
@@ -73,6 +77,7 @@ public class UserController {
     }
 
     //회원가입
+    @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Map<String, Object> userData) {
       Map<String, String> response = new HashMap<>();  
@@ -117,6 +122,7 @@ public class UserController {
     }    
 
     //로그인
+    @Operation(summary = "로그인", description = "이메일과 비밀번호를 사용하여 로그인합니다.")   
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, Object> loginData, HttpServletRequest request) {
       Map<String, String> response = new HashMap<>();
