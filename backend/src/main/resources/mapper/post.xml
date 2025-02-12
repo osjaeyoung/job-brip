@@ -148,6 +148,14 @@
             CURRENT_TIMESTAMP
         )
     </insert>    
+    <!-- 신고 취소 -->
+    <delete id="deleteReport" parameterType="map">
+        DELETE FROM post_reports
+        WHERE post_id = #{postId}
+        AND reporter_id = #{reporterId}
+    </delete>
+
+
     <!-- 댓글 관련 쿼리 -->
 
     <!-- 댓글 작성 -->

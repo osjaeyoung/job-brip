@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -266,7 +267,7 @@ public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, 
             }
 
             // 게시물 존재 확인
-            Map<String, Object> post = sqlSession.selectOne("org.mybatis.post.getPostById", params.get("postId"));
+            Map<String, Object> post = sqlSession.selectOne("org.mybatis.post.getPostById", params);
             if (post == null) {
                 response.put("result", "fail");
                 response.put("message", "존재하지 않는 게시물입니다.");
@@ -278,19 +279,21 @@ public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, 
             likeParams.put("userId", userId);
             likeParams.put("postId", params.get("postId"));
             
-            Integer likeExists = sqlSession.selectOne("org.mybatis.post.checkLikeExists", likeParams);
-            
-            if (likeExists > 0) {
-                // 좋아요 취소
-                sqlSession.delete("org.mybatis.post.deleteLike", likeParams);
-                response.put("result", "success");
-                response.put("message", "좋아요가 취소되었습니다.");
-            } else {
-                // 좋아요 추가
-                sqlSession.insert("org.mybatis.post.insertLike", likeParams);
-                response.put("result", "success");
-                response.put("message", "좋아요가 추가되었습니다.");
-            }
+            Map<String, Object> existingHeart = sqlSession.selectOne("org.mybatis.post.getHeart", likeParams);
+        
+            if (existingHeart != null) {                 
+                // 좋아요 취소                 
+                sqlSession.delete("org.mybatis.post.deleteHeart", likeParams);
+                sqlSession.update("org.mybatis.post.decrementHeartCount", likeParams);
+                response.put("result", "success");                 
+                response.put("message", "좋아요가 취소되었습니다.");             
+            } else {                 
+                // 좋아요 추가                 
+                sqlSession.insert("org.mybatis.post.insertHeart", likeParams);
+                sqlSession.update("org.mybatis.post.incrementHeartCount", likeParams);
+                response.put("result", "success");                 
+                response.put("message", "좋아요가 추가되었습니다.");             
+            } 
             
             return ResponseEntity.ok(response);
             
@@ -314,10 +317,11 @@ public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, 
                 response.put("message", "게시물 ID가 필요합니다.");
                 return ResponseEntity.badRequest().body(response);
             }
-
-            if (params.get("reason") == null || params.get("reason").toString().trim().isEmpty()) {
+            // 신고 사유 검증 강화
+            String reportReason = params.get("reason") != null ? params.get("reason").toString().trim() : "";
+            if (reportReason.isEmpty()) {
                 response.put("result", "fail");
-                response.put("message", "신고 사유를 입력해주세요.");
+                response.put("message", "신고 사유는 필수로 입력해야 합니다.");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -338,19 +342,19 @@ public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, 
 
             // 이미 신고했는지 확인
             Map<String, Object> reportParams = new HashMap<>();
-            reportParams.put("userId", userId);
+            reportParams.put("reporterId", userId);
             reportParams.put("postId", params.get("postId"));
             
-            Integer reportExists = sqlSession.selectOne("org.mybatis.post.checkReportExists", reportParams);
+            Map<String, Object> reportExists = sqlSession.selectOne("org.mybatis.post.getExistingReport", reportParams);
             
-            if (reportExists > 0) {
+            if (reportExists != null) {
                 response.put("result", "fail");
                 response.put("message", "이미 신고한 게시물입니다.");
                 return ResponseEntity.ok(response);
             }
 
             // 신고 데이터 준비
-            reportParams.put("reason", params.get("reason"));
+            reportParams.put("reportReason", params.get("reason"));
             reportParams.put("status", "PENDING"); // 신고 상태 (PENDING, RESOLVED, REJECTED)
             
             // 신고 추가
@@ -366,10 +370,11 @@ public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-    // 게시물 신고 취소
+    //신고취소
     @PostMapping("/cancel-report")
-    public ResponseEntity<Map<String, String>> cancelReport(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+    public ResponseEntity<Map<String, String>> cancelReport(
+        @RequestBody Map<String, Object> params, 
+        HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
         try {
             String userId = (String) request.getAttribute("userId");
@@ -380,22 +385,28 @@ public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, 
                 response.put("message", "게시물 ID가 필요합니다.");
                 return ResponseEntity.badRequest().body(response);
             }
-
+    
             // 신고 데이터 존재 확인
             Map<String, Object> reportParams = new HashMap<>();
-            reportParams.put("userId", userId);
+            reportParams.put("reporterId", userId);
             reportParams.put("postId", params.get("postId"));
             
-            Integer reportExists = sqlSession.selectOne("org.mybatis.post.checkReportExists", reportParams);
+            Map<String, Object> reportExists = sqlSession.selectOne("org.mybatis.post.getExistingReport", reportParams);
             
-            if (reportExists == 0) {
+            if (reportExists == null) {
                 response.put("result", "fail");
-                response.put("message", "신고 내역이 존재하지 않습니다.");
+                response.put("message", "취소할 수 있는 신고 내역이 존재하지 않습니다.");
                 return ResponseEntity.ok(response);
             }
-
+    
             // 신고 취소
-            sqlSession.delete("org.mybatis.post.deleteReport", reportParams);
+            int deletedCount = sqlSession.delete("org.mybatis.post.deleteReport", reportParams);
+            
+            if (deletedCount == 0) {
+                response.put("result", "fail");
+                response.put("message", "신고 취소에 실패했습니다.");
+                return ResponseEntity.ok(response);
+            }
             
             response.put("result", "success");
             response.put("message", "신고가 취소되었습니다.");
