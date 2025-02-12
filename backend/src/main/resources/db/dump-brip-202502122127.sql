@@ -85,7 +85,7 @@ CREATE TABLE `post_hearts` (
   PRIMARY KEY (`heart_id`),
   UNIQUE KEY `unique_post_user` (`post_id`,`user_id`) COMMENT '중복 좋아요 방지',
   CONSTRAINT `post_hearts_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE `post_reports` (
   PRIMARY KEY (`report_id`),
   KEY `post_id` (`post_id`),
   CONSTRAINT `post_reports_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +138,7 @@ CREATE TABLE `posts` (
   `post_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category` enum('노하우&Q&A','실시간채팅','업종별/연차별','정보공유') NOT NULL COMMENT '게시글 카테고리',
   `user_id` bigint(20) NOT NULL COMMENT '작성자 ID',
-  `title` varchar(200) NOT NULL COMMENT '게시글 제목',
+  `img_url` varchar(500) DEFAULT NULL COMMENT '대표 이미지 URL',
   `content` text NOT NULL COMMENT '게시글 내용',
   `view_count` int(11) DEFAULT 0 COMMENT '조회수',
   `heart_count` int(11) DEFAULT 0 COMMENT '좋아요 수',
@@ -148,7 +148,7 @@ CREATE TABLE `posts` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT '수정 시간',
   PRIMARY KEY (`post_id`),
   KEY `idx_category_created` (`category`,`created_at` DESC)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +157,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,'노하우&Q&A',2,'수정된 제목','수정된 내용',1,0,0,1,'2025-02-12 10:34:50','2025-02-12 11:46:19'),(2,'노하우&Q&A',2,'게시물 제목','게시물 내용',0,0,0,0,'2025-02-12 10:48:06','2025-02-12 10:48:06'),(3,'노하우&Q&A',2,'게시물 제목22','게시물 내용',0,0,0,0,'2025-02-12 10:48:32','2025-02-12 10:48:32');
+INSERT INTO `posts` VALUES (1,'노하우&Q&A',2,'수정된 제목','수정된 내용',0,0,0,0,'2025-02-12 12:24:57','2025-02-12 12:25:23');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-12 21:13:50
+-- Dump completed on 2025-02-12 21:27:27
