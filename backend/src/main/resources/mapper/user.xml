@@ -22,5 +22,38 @@
         UPDATE users 
         SET password = #{password}
         WHERE email = #{email}
-    </update>    
+    </update> 
+
+
+
+    <!-- 프로필 조회 -->
+    <select id="getUserProfile" parameterType="string" resultType="map">
+        SELECT 
+            name,
+            nickname,
+            phone,
+            email,
+            birth_date,
+            profile_image
+        FROM users
+        WHERE id = #{userId}
+    </select>
+
+    <!-- 프로필 이미지 업데이트 -->
+    <update id="updateProfileImage" parameterType="map">
+        UPDATE users 
+        SET profile_image = #{profileImage}
+        WHERE id = #{userId}
+    </update>
+
+    <!-- 프로필 정보 업데이트 -->
+    <update id="updateUserProfile" parameterType="map">
+        UPDATE users
+        SET 
+            name = #{name},
+            nickname = #{nickname},
+            phone = #{phone},
+            birth_date = #{birthDate}
+        WHERE id = #{userId}
+    </update>
 </mapper>

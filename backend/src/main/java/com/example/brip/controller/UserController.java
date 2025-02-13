@@ -9,13 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.brip.config.JwtTokenProvider;
 import com.example.brip.service.EmailService;
+import com.example.brip.util.FileUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -334,4 +338,114 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     } 
+
+
+    //--------------------------------------------------------
+    // 프로필 조회
+    @GetMapping("/profile")
+    public ResponseEntity<Map<String, Object>> getProfile(HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String userId = (String) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("result", "fail");
+                response.put("message", "로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            Map<String, Object> userProfile = sqlSession.selectOne("org.mybatis.user.getUserProfile", userId);
+            if (userProfile == null) {
+                response.put("result", "fail");
+                response.put("message", "프로필 정보를 찾을 수 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            response.put("result", "success");
+            response.put("data", userProfile);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "프로필 조회 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    // 프로필 이미지 업데이트
+    @PostMapping(value = "/profile/image", consumes = "multipart/form-data")
+    public ResponseEntity<Map<String, String>> updateProfileImage(
+        @RequestParam("image") MultipartFile image,
+        HttpServletRequest request) {
+        
+        Map<String, String> response = new HashMap<>();
+        try {
+            String userId = (String) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("result", "fail");
+                response.put("message", "로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            // 이미지 검증
+            if (image.getSize() > 5 * 1024 * 1024) {
+                response.put("result", "fail");
+                response.put("message", "이미지 크기는 5MB를 초과할 수 없습니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 이미지 저장 및 URL 생성
+            String imageUrl = FileUtil.uploadProfileImage(image);
+            
+            // DB 업데이트
+            Map<String, Object> params = new HashMap<>();
+            params.put("userId", userId);
+            params.put("profileImage", imageUrl);
+            
+            sqlSession.update("org.mybatis.user.updateProfileImage", params);
+
+            response.put("result", "success");
+            response.put("message", "프로필 이미지가 업데이트되었습니다.");
+            response.put("imageUrl", imageUrl);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "프로필 이미지 업데이트 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // 프로필 정보 업데이트
+    @PostMapping("/profile/update")
+    public ResponseEntity<Map<String, String>> updateProfile(
+            @RequestBody Map<String, Object> profileData,
+            HttpServletRequest request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            String userId = (String) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("result", "fail");
+                response.put("message", "로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            // 필수 필드 검증
+            String[] requiredFields = {"name", "nickname", "phone", "birthDate"};
+            for (String field : requiredFields) {
+                if (profileData.get(field) == null || profileData.get(field).toString().trim().isEmpty()) {
+                    response.put("result", "fail");
+                    response.put("message", field + "은(는) 필수 입력값입니다.");
+                    return ResponseEntity.badRequest().body(response);
+                }
+            }
+
+            profileData.put("userId", userId);
+            sqlSession.update("org.mybatis.user.updateUserProfile", profileData);
+
+            response.put("result", "success");
+            response.put("message", "프로필이 업데이트되었습니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "프로필 업데이트 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }    
 }
