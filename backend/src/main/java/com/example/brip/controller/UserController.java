@@ -215,12 +215,12 @@ public class UserController {
             }
 
             // 이메일 존재 여부 확인
-            Integer userExists = sqlSession.selectOne("org.mybatis.user.countByEmail", email);
-            if (userExists == 0) {
-                response.put("result", "fail");
-                response.put("message", "등록되지 않은 이메일입니다.");
-                return ResponseEntity.ok(response);
-            }
+            // Integer userExists = sqlSession.selectOne("org.mybatis.user.countByEmail", email);
+            // if (userExists == 0) {
+            //     response.put("result", "fail");
+            //     response.put("message", "등록되지 않은 이메일입니다.");
+            //     return ResponseEntity.ok(response);
+            // }
 
             emailService.sendVerificationEmail(email);
             

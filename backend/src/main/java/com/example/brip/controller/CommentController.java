@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.brip.service.NotificationService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +25,9 @@ public class CommentController {
     
     @Autowired
     SqlSession sqlSession;
+    
+    @Autowired
+    private NotificationService notificationService;  // 추가
 
     // 댓글 목록 조회
     @GetMapping("/list/{postId}")
@@ -97,6 +103,13 @@ public class CommentController {
             // 게시글의 댓글 수 증가
             sqlSession.update("org.mybatis.post.incrementCommentCount", commentData);
             
+            // 알림 생성 (서비스에서 모든 로직 처리)
+            notificationService.createCommentNotification(
+                Integer.parseInt(commentData.get("postId").toString()),
+                userId,
+                commentData.get("content").toString()
+            );
+            
             response.put("result", "success");
             response.put("message", "댓글이 등록되었습니다.");
             return ResponseEntity.ok(response);
@@ -138,7 +151,7 @@ public class CommentController {
                 "org.mybatis.comment.getCommentById", 
                 params  // Map 형태로 전달
             );
-            
+
             if (parentComment == null) {
                 response.put("result", "fail");
                 response.put("message", "존재하지 않는 댓글입니다.");
@@ -154,6 +167,14 @@ public class CommentController {
             // 게시글의 댓글 수 증가
             sqlSession.update("org.mybatis.post.incrementCommentCount", replyData);
             
+            // 알림 생성 (서비스에서 모든 로직 처리)
+            notificationService.createReplyNotification(
+                Integer.parseInt(replyData.get("postId").toString()),
+                userId,
+                Integer.parseInt(replyData.get("parentId").toString()),
+                replyData.get("content").toString()
+            );      
+                  
             response.put("result", "success");
             response.put("message", "답글이 등록되었습니다.");
             return ResponseEntity.ok(response);

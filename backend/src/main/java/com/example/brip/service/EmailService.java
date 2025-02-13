@@ -29,8 +29,12 @@ public class EmailService {
        message.setText("인증 코드: " + code);
        //메일코드 폼 입혀야함
        //....
+       try{
+         mailSender.send(message);
+       }catch(Exception e){
+         System.out.println("메일발송에러"+e.toString());
+       }
        
-       mailSender.send(message);
    }
 
    public boolean verifyCode(String email, String code) {
