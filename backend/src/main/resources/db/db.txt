@@ -122,3 +122,84 @@ CREATE TABLE inquiries (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '작성일',
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+----------------------------이력서
+-- 기본 이력서 정보
+CREATE TABLE resume (
+    resume_id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT NOT NULL COMMENT '사용자 ID',
+    resume_photo VARCHAR(255),
+    resume_title VARCHAR(100) NOT NULL,
+    is_default BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id) REFERENCES users(id)
+);
+
+-- 학력 정보
+CREATE TABLE r_education (
+    education_id INT PRIMARY KEY AUTO_INCREMENT,
+    resume_id INT NOT NULL,
+    school_type VARCHAR(20) NOT NULL COMMENT '고등학교, 대학교, 대학원 등',
+    school_name VARCHAR(100) NOT NULL,
+    major VARCHAR(100),
+    admission_date VARCHAR(7) NOT NULL COMMENT '입학년월 YYYY-MM',
+    graduation_date VARCHAR(7) NOT NULL COMMENT '졸업년월 YYYY-MM',
+    max_score DECIMAL(3,2) COMMENT '만점 (예: 4.5)',
+    score DECIMAL(3,2) COMMENT '본인 학점',
+    FOREIGN KEY (resume_id) REFERENCES resume(resume_id) ON DELETE CASCADE
+);
+
+-- 언어능력
+CREATE TABLE r_language_skill (
+    language_skill_id INT PRIMARY KEY AUTO_INCREMENT,
+    resume_id INT NOT NULL,
+    language_name VARCHAR(50) NOT NULL COMMENT '외국어명',
+    speaking_level VARCHAR(20) COMMENT '회화능력',
+    test_name VARCHAR(50) COMMENT '시험명',
+    score VARCHAR(20) COMMENT '점수/급수',
+    acquisition_date VARCHAR(7) COMMENT '취득년월 YYYY-MM',
+    FOREIGN KEY (resume_id) REFERENCES resume(resume_id) ON DELETE CASCADE
+);
+
+-- 자격증
+CREATE TABLE r_certificate (
+    certificate_id INT PRIMARY KEY AUTO_INCREMENT,
+    resume_id INT NOT NULL,
+    certificate_name VARCHAR(100) NOT NULL COMMENT '자격증명',
+    issuing_organization VARCHAR(100) NOT NULL COMMENT '발행처',
+    acquisition_date VARCHAR(7) NOT NULL COMMENT '취득년월 YYYY-MM',
+    FOREIGN KEY (resume_id) REFERENCES resume(resume_id) ON DELETE CASCADE
+);
+
+-- 대외활동
+CREATE TABLE r_activity (
+    activity_id INT PRIMARY KEY AUTO_INCREMENT,
+    resume_id INT NOT NULL,
+    activity_type VARCHAR(50) NOT NULL COMMENT '대외활동 유형',
+    organization_name VARCHAR(100) NOT NULL COMMENT '기관명',
+    start_date VARCHAR(7) NOT NULL COMMENT '시작년월 YYYY-MM',
+    end_date VARCHAR(7) NOT NULL COMMENT '종료년월 YYYY-MM',
+    description TEXT COMMENT '활동내용',
+    FOREIGN KEY (resume_id) REFERENCES resume(resume_id) ON DELETE CASCADE
+);
+
+-- 경력
+CREATE TABLE r_career (
+    career_id INT PRIMARY KEY AUTO_INCREMENT,
+    resume_id INT NOT NULL,
+    career_title VARCHAR(100) NOT NULL COMMENT '경력 제목',
+    start_date VARCHAR(7) NOT NULL COMMENT '시작년월 YYYY-MM',
+    end_date VARCHAR(7) COMMENT '종료년월 YYYY-MM',
+    FOREIGN KEY (resume_id) REFERENCES resume(resume_id) ON DELETE CASCADE
+);
+
+--포트폴리오오
+CREATE TABLE r_portfolio (
+    portfolio_id INT PRIMARY KEY AUTO_INCREMENT,
+    resume_id INT NOT NULL,
+    portfolio_name VARCHAR(100) NOT NULL COMMENT '포트폴리오명',
+    url VARCHAR(255) COMMENT 'URL',
+    file_path VARCHAR(255) COMMENT '첨부파일 경로',
+    FOREIGN KEY (resume_id) REFERENCES resume(resume_id) ON DELETE CASCADE
+);
