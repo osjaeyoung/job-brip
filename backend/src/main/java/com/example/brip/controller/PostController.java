@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -194,7 +195,7 @@ public class PostController {
         }
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, Object> params) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -227,7 +228,7 @@ public class PostController {
     }
 
     // 게시물 상세 조회
-    @PostMapping("/detail")
+    @GetMapping("/detail")
     public ResponseEntity<Map<String, Object>> getPostDetail(@RequestBody Map<String, Object> params) {
         Map<String, Object> response = new HashMap<>();
         try {
