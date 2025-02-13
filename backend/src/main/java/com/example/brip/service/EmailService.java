@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+// yulsysinc@gmail.com
+// djfuqek2!
+// ahpp audo gdml rxwe
+
 @Service
 public class EmailService {
    @Autowired
