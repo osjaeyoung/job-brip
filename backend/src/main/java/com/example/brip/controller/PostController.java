@@ -49,7 +49,9 @@ public class PostController {
             System.out.println("Received postData: " + postData);
     
             // 입력값 직접 확인
-            String imgUrl = String.valueOf(postData.get("imgUrl"));
+            String imgUrl = postData.get("imgUrl") != null ? 
+                       String.valueOf(postData.get("imgUrl")) : 
+                       null;
             String content = String.valueOf(postData.get("content"));
             String category = String.valueOf(postData.get("category"));
     
@@ -88,18 +90,17 @@ public class PostController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            if (postData.get("imgUrl") == null || postData.get("imgUrl").toString().trim().isEmpty()) {
-                response.put("result", "fail");
-                response.put("message", "제목을 입력해주세요.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
             if (postData.get("content") == null || postData.get("content").toString().trim().isEmpty()) {
                 response.put("result", "fail");
                 response.put("message", "내용을 입력해주세요.");
                 return ResponseEntity.badRequest().body(response);
             }
 
+            // 이미지 URL 처리 (선택적)
+            if (postData.get("imgUrl") == null || postData.get("imgUrl").toString().trim().isEmpty()) {
+                postData.put("imgUrl", null); // 이미지가 없는 경우 null로 설정
+            }
+            
             // 카테고리 검증
             String category = (String) postData.get("category");
             if (category == null || category.trim().isEmpty()) {
@@ -193,32 +194,37 @@ public class PostController {
         }
     }
 
-// 게시물 목록 조회
-@PostMapping("/list")
-public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, Object> params) {
-    Map<String, Object> response = new HashMap<>();
-    try {
-        int page = (int) params.getOrDefault("page", 0);
-        int size = (int) params.getOrDefault("size", 10);
-        int offset = page * size;
-        
-        params.put("offset", offset);
-        params.put("size", size);
-        
-        List<Map<String, Object>> posts = sqlSession.selectList("org.mybatis.post.getPosts", params);
-        Integer totalCount = sqlSession.selectOne("org.mybatis.post.getPostsCount", params);
-        
-        response.put("result", "success");
-        response.put("data", posts);
-        response.put("totalCount", totalCount);
-        return ResponseEntity.ok(response);
-        
-    } catch (Exception e) {
-        response.put("result", "fail");
-        response.put("message", "게시물 목록 조회 중 오류가 발생했습니다.");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    @PostMapping("/list")
+    public ResponseEntity<Map<String, Object>> getPostList(@RequestBody Map<String, Object> params) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // Basic pagination parameters
+            int page = (int) params.getOrDefault("page", 0);
+            int size = (int) params.getOrDefault("size", 10);
+            int offset = page * size;
+            
+            // Add category parameter (already handled in your SQL)
+            String category = (String) params.get("category");
+            
+            params.put("offset", offset);
+            params.put("size", size);
+            
+            // Get posts with category filter
+            List<Map<String, Object>> posts = sqlSession.selectList("org.mybatis.post.getPosts", params);
+            Integer totalCount = sqlSession.selectOne("org.mybatis.post.getPostsCount", params);
+            
+            response.put("result", "success");
+            response.put("data", posts);
+            response.put("totalCount", totalCount);
+            response.put("currentCategory", category); // Add current category to response
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "게시물 목록 조회 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
-}
 
     // 게시물 상세 조회
     @PostMapping("/detail")
