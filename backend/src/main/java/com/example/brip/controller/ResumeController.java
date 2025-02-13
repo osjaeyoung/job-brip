@@ -34,6 +34,14 @@ public class ResumeController {
                 response.put("message", "로그인이 필요합니다.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
+            
+            // 기본 이력서로 설정하려는 경우
+            if (Boolean.TRUE.equals(resumeData.get("isDefault"))) {
+                // 기존 기본 이력서가 있다면 해제
+                Map<String, Object> params = new HashMap<>();
+                params.put("id", userId);
+                sqlSession.update("org.mybatis.resume.resetDefaultResume", params);
+            }
 
             // 기본 이력서 정보 저장
             Map<String, Object> resumeParams = new HashMap<>();
