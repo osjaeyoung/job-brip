@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import style from "./SignInPage.module.css";
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
-import { userData } from "../data/userData"
+import { userData } from "../../data/userData"
 
 export default function SignInPage() {
   const [disabled, setDisabled] = useState(true); // 버튼 비활성화 상태

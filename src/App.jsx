@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import SignInPage from './pages/SignInPage';
-import PwFindPage from './pages/PwFindPage';
-import SignUpPage from './pages/SignUpPage';
+import SignInPage from './pages/auth/SignInPage';
+import PwFindPage from './pages/auth/PwFindPage';
+import SignUpPage from './pages/auth/SignUpPage';
 import SearchPage from './pages/SearchPage';
 import RoadMapInfoPage from './pages/RoadMapInfoPage';
 import RoadMapDesignPage from './pages/RoadMapDesignPage';
