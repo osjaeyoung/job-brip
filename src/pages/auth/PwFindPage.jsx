@@ -1,10 +1,10 @@
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
-import "../styles/login.css";
-import ArrowPrevButton from "../components/ArrowPrevButton";
-import Button from "../components/Button";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
+import "../../styles/login.css";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
+import Button from "../../components/Button";
 import style from "./PwFindPage.module.css";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 
 export default function PwFindPage() {
 

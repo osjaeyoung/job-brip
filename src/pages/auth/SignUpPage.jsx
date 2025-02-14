@@ -1,11 +1,11 @@
-import Container from "../components/Container";
-import Main from "../components/layout/Main";
+import Container from "../../components/Container";
+import Main from "../../components/layout/Main";
 import { Link, useNavigate } from "react-router-dom";
-import ArrowPrevButton from "../components/ArrowPrevButton";
-import Button from "../components/Button";
+import ArrowPrevButton from "../../components/ArrowPrevButton";
+import Button from "../../components/Button";
 import style from "./SignUpPage.module.css";
-import Input from "../components/Input";
-import Select from "../components/Select";
+import Input from "../../components/Input";
+import Select from "../../components/Select";
 import { useState, useEffect } from "react";
 
 export default function SignUpPage() {
