@@ -9,9 +9,14 @@
     <select id="countByEmail" parameterType="String" resultType="Integer">
         SELECT COUNT(*) FROM users WHERE email = #{email}
     </select>
+    
+    <!-- 회원가입 쿼리 수정 -->
     <insert id="insertUser" parameterType="Map">
-        INSERT INTO users (name, nickname, email, password)
-        VALUES (#{name}, #{nickname}, #{email}, #{password})
+        INSERT INTO users (
+            cuid, name, nickname, email, password
+        ) VALUES (
+            #{cuid}, #{name}, #{nickname}, #{email}, #{password}
+        )
     </insert>
 
     <select id="getUserByEmail" parameterType="String" resultType="Map">

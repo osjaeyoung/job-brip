@@ -2,6 +2,7 @@ package com.example.brip.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,9 @@ public class UserController {
         String encodedPassword = encoder.encode(rawPassword);
         //System.out.println("Raw password: " + rawPassword);
         //System.out.println("Encoded password: " + encodedPassword);
-         
+        // UUID 생성하여 추가
+        String cuid = UUID.randomUUID().toString();
+        userData.put("cuid", cuid);
         userData.put("password", encodedPassword);
         sqlSession.insert("org.mybatis.user.insertUser", userData);
         response.put("result", "success");
@@ -184,6 +187,8 @@ public class UserController {
           //response.put("userId", user.get("id").toString());
           response.put("email", user.get("email").toString());
           response.put("token", token);
+          response.put("nickname", user.get("nickname").toString());
+          response.put("cuid", user.get("cuid").toString());
           return ResponseEntity.ok(response);
           
       } catch (Exception e) {
