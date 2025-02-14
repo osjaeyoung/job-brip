@@ -6,6 +6,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.example.brip.model.ChatRoom;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 import java.util.UUID;
@@ -22,7 +23,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 @Component
-public class SocketHandler extends TextWebSocketHandler {
+public class SocketHandler extends TextWebSocketHandler implements InitializingBean{
     private Set<WebSocketSession> sessions = new HashSet<>();
     private Map<String, ChatRoom> chatRooms = new HashMap<>();
     private Map<WebSocketSession, String> sessionUserIds = new HashMap<>();  // session별 userId 저장
@@ -62,6 +63,7 @@ public class SocketHandler extends TextWebSocketHandler {
                 case "JOIN_ROOM": joinRoom(session, msg); break;
                 case "CHAT": handleChat(session, msg); break;
                 case "LEAVE_ROOM": leaveRoom(session, msg); break;
+                case "DELETE_ROOM": deleteRoom(session, msg); break;
             }
         } catch (ParseException e) {
             System.out.println("handle err:"+e.toString());
@@ -90,6 +92,12 @@ public class SocketHandler extends TextWebSocketHandler {
 
     private void createRoom(WebSocketSession session, JSONObject msg) {
         String roomId = UUID.randomUUID().toString();
+        
+        // 메모리에 방 추가
+        ChatRoom chatRoom = new ChatRoom(roomId, msg.get("name").toString(), msg.get("type").toString(),
+        Integer.parseInt(msg.get("maxUsers").toString()), msg.get("imageUrl").toString(), new HashSet<>());
+        chatRooms.put(roomId, chatRoom);
+        
         Map<String, Object> params = new HashMap<>();
         params.put("roomId", roomId);
         params.put("name", msg.get("name"));
@@ -97,6 +105,7 @@ public class SocketHandler extends TextWebSocketHandler {
         params.put("maxUsers", msg.get("maxUsers"));
         params.put("imageUrl", msg.get("imageUrl"));        
         sqlSession.insert("org.mybatis.chat.insertChatRoom", params);
+    
     
         try {
             // 방 생성 성공 응답 전송
@@ -232,4 +241,46 @@ public class SocketHandler extends TextWebSocketHandler {
             //broadcastRoomList();
         }
     }    
+
+    private void deleteRoom(WebSocketSession session, JSONObject msg) {
+        String roomId = msg.get("roomId").toString();
+        ChatRoom room = chatRooms.get(roomId);
+        if (room != null) {
+            room.getUserIds().remove(session.getId());
+            
+            // 방에 아무도 없으면 방과 대화내역 삭제
+            if (room.getUserIds().isEmpty()) {
+                try {
+                    // DB에서 방과 대화내역 삭제
+                    sqlSession.delete("org.mybatis.chat.deleteMessagesByRoomId", roomId);
+                    sqlSession.delete("org.mybatis.chat.deleteRoom", roomId);
+                    
+                    // 메모리에서 방 정보 삭제
+                    chatRooms.remove(roomId);
+    
+                    // 방 삭제 알림 전송
+                    JSONObject response = new JSONObject();
+                    response.put("protocol", "ROOM_DELETED");
+                    session.sendMessage(new TextMessage(response.toString()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // DB에서 초기 chatRooms 데이터 가져오기
+        List<Map> rooms = sqlSession.selectList("org.mybatis.chat.selectAllRooms");
+        for (Map room : rooms) {
+            String roomId = room.get("roomId").toString();
+            String name = room.get("name").toString();
+            String type = room.get("type").toString();
+            int maxUsers = Integer.parseInt(room.get("maxUsers").toString());
+            String imageUrl = room.get("imageUrl").toString();
+            ChatRoom chatRoom = new ChatRoom(roomId, name, type, maxUsers, imageUrl, new HashSet<>());
+            chatRooms.put(roomId, chatRoom);
+        }
+    } 
 }
