@@ -1,0 +1,7 @@
+.select{padding-left: 18px; height: 50px; border: 1px solid #E7E8E8; border-radius: 8px; color: #72777A; cursor: pointer;   -webkit-appearance: none;-moz-appearance: none;  appearance: none; background: url(../assets/images/login/Select_Arrow_Icon.svg)no-repeat 98% center;   background-size: 17px 9px;}
+
+@media (max-width: 1199px){
+
+  .select{height: 48px;}
+
+}

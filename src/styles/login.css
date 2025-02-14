@@ -1,0 +1,27 @@
+/* 로그인 */
+.mb-15{margin-bottom: 15px;}
+.errorMessage{margin-top: 5px; color: #f55050; font-size: 14px;}
+.infoMessage{margin-top: 5px; color: #090A0A; font-size: 14px;} 
+.signinBox h3{margin-bottom: 30px; color: #000; font-size: 24px; font-weight: 700; text-align: center;}
+.signinContent{position: relative; padding: 30px 70px 50px; max-width: 580px; width: 100%; min-height: 851px; margin: 0 auto; background-color: #fff; border-radius: 20px;}
+.signinBox .container{max-width: 328px; margin: 0 auto;}
+.signinBox .linkbtn{position: absolute; top:28px; left:34px;}
+.signinBox label{display: block; font-weight: 500; color: #090A0A;}
+
+@media (max-width: 1199px){
+
+  .signinBox .linkbtn{left: 20px; top: 20px;}
+  .signinContent{padding: 20px 30px 50px;}
+  .signinBox .inputBox input{height: 60px;}
+  .signinBox .container{max-width: none;}
+  .signinBox h3{font-size: 22px;}
+
+}
+
+@media (max-width: 767px){
+
+  .signinBox h3{font-size: 18px;}
+
+}
+
+

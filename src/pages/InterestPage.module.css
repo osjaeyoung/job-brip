@@ -1,0 +1,12 @@
+.cardList{display: flex; flex-wrap: wrap; gap: 33px 5.3%}
+.cardList a{width: 29.8%;}
+
+@media (max-width: 1199px){
+
+  .cardList{display: flex; flex-wrap: wrap; gap: 33px 2%}
+  .cardList a{width: 32%;}
+
+}
+
+
+

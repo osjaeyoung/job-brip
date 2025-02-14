@@ -1,0 +1,96 @@
+.arrowPrevBtn{position: absolute; top:0; left:0;}
+.btn{max-width: none; margin: 0;}
+.title{margin-bottom: 65px; font-size: 24px; font-weight: 600; color: #000;}
+.employmentDetailBox{margin-top: 30px;}
+.employmentDetailTop{margin-bottom: 70px; position: relative; padding: 0 22px 25px 89px; border-bottom: 1px solid #D9D9D9;}
+.employmentDetailTop .textBox{position: relative; padding: 20px 22px 0 0;}
+.employmentDetailTop .textBox .company{margin-bottom: 10px; display: block; color: #1C1B18;}
+.employmentDetailTop .textBox .titleBox{margin-bottom: 10px; display: flex; gap: 0 27px; align-items: center;}
+.employmentDetailTop .textBox .titleBox h3{font-size: 20px; color: #000; font-weight: 600;}
+.employmentDetailTop .textBox .titleBox span{display: flex; align-items: center; justify-content: center; width: 48px; height: 24px; background-color: rgba(202, 56, 58, 0.1); border-radius: 50px; color: #9D1C1D; font-size: 14px; font-weight: 400;}
+.employmentDetailTop .textBox .condition{color: #5F616D;}
+.employmentDetailTop .textBox .likeBtn{position: absolute; top:28px; right:22px; width: 28px; height: 24px; background: url(../assets/images/sub/Link_Btn.svg)no-repeat;}
+.employmentDetailTop .textBox .likeBtn.active{background: url(../assets/images/sub/Like_Active_Icon.svg)no-repeat;}
+.employmentDetailTop .imgBox{border-radius: 10px;}
+.employmentDetailTop .imgBox img{display: block; width: 100%;}
+.employmentDetailContent{display: flex; gap: 0 21px;}
+.employmentDetailLeft{flex-shrink: 0; width: 55.2%;} 
+.employmentDetail h4{margin-bottom: 44px; font-size: 20px; font-weight: 600; color: #000; line-height: 1;}
+.employmentDetail{margin-bottom: 56px;}
+.employmentDetail .detailContentList li{margin-bottom: 28px;}
+.employmentDetail .detailContentList li:last-child{margin-bottom: 45px;}
+.employmentDetail .detailContentList li span,
+.employmentDetail .detailContentList li em{display: block; color: #000;}
+.employmentDetail .detailView{width: 100%; display: flex; align-items: center; justify-content: center; height: 57px; border-radius: 10px; background-color: #F5F5F5; color: #000; font-weight: 600;}
+.employmentDetail .techStack{display: flex; flex-wrap: wrap; gap: 20px 10px;}
+.employmentDetail .techStack li{padding: 6px 19px; border-radius: 50px; font-size: 14px; color: #313131; font-weight: 400; border: 1px solid #E9E9E9;}
+.employmentDetail .deadlineText{display: block; color: #5F616D; font-weight: 400;}
+.employmentDetail address{margin-bottom: 42px; padding-left: 45px; position: relative; color: #5F616D;}
+.employmentDetail address::before{width: 16px; height: 20px; content: ''; position: absolute; top:2px; left:13px; background: url(../assets/images/sub/Map_Icon.svg)no-repeat center;}
+.employmentDetail .mapBox{display: flex; align-items: center; justify-content: center; height: 271px; border: 1px solid #ddd;}
+.employmentDetailRight{position: sticky; top:0; width: 316px;}
+.employmentDetailRight .aiInfoBox{margin-top: 35px; padding: 32px 0 32px 22px; background-color: #FAFAFC; border-radius: 10px;}
+.employmentDetailRight .aiInfoBox p{padding-left: 77px; position: relative; font-size: 12px; font-weight: 500; line-height: 1.7; color: #000; font-weight: 500;}
+.employmentDetailRight .aiInfoBox p::before{content: ''; width: 38px; height: 42px; position: absolute; top:0; left:0; background: url(../assets/images/sub/AI_Icon.svg)no-repeat center;}
+.employmentDetailRight .aiInfoBox p strong{font-weight: 600;}
+.applyBox{position: relative; margin-bottom: 29px; padding: 20px 17px 42px; border: 1px solid #D9D9D9; border-radius: 10px;}
+.applyBox .link{width: 9px; height: 14px; position: absolute; top:26px; left:38px; background: url(../assets/images/sub/Arrow_Icon02.svg)no-repeat center;}
+.applyBox h4{margin-bottom: 27px; color: #090A0A; font-size: 18px; text-align: center; font-weight: 400;}
+.applyBox .selectBox{margin-bottom: 29px;}
+.applyBox .selectBox .select{width: 100%; padding-left: 16px; height: 48px; border: 1px solid #E3E5E5; border-radius: 8px; color: #72777A; font-size: 14px; -webkit-appearance:none;  -moz-appearance:none; appearance:none; background: url(../assets/images/login/Select_Arrow_Icon.svg)no-repeat 93% center; background-size: 17px 9px; cursor: pointer;}
+.applyBox .resumeList li{margin-bottom: 37px;}
+.applyBox .resumeList li:last-child{margin-bottom: 47px;}
+.applyBox .resumeList li .resumeBox{position: relative; padding: 15px 10px 17px 73px; display: block; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); border-radius: 5px;}
+.applyBox .resumeList li .resumeBox .resumeInfoList{display: flex; flex-wrap: wrap; gap: 6px 11px;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span{display: block; padding: 3px 6px; border-radius: 50px; font-size: 10px;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span.basic{background-color: rgba(67, 52, 224, 0.1); color: #4334E0;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span.certification{
+display: flex; align-items: center; gap: 0 2px; position: relative; background-color: rgba(39, 109, 32, 0.1); color: #276D20;}
+.applyBox .resumeList li .resumeBox .resumeInfoList span.certification::after{content: ''; width: 11px; height: 11px; background: url(../assets/images/sub/Certification_Icon.svg)no-repeat center;}
+.applyBox .resumeList li .resumeBox .titleBox{padding-top: 14px; margin-bottom: 5px;}
+.applyBox .resumeList li .resumeBox .titleBox h5 label{color: #000; font-weight: 600; font-size: 16px; cursor: pointer;}
+.applyBox .resumeList li .resumeBox .titleBox input + label::before{content: ''; position: absolute; top:16px; left:21px; width: 22px; height: 22px; border: 1px solid #CDCFD0; background-color: #fff; border-radius: 50px;}
+.applyBox .resumeList li .resumeBox .titleBox input:checked + label::before{background: url(../assets/images/sub/check_icon.png)no-repeat center; border: 0;}
+.applyBox .resumeList li .resumeBox .date{font-size: 12px; color: #5F616D;}
+.applyBox .resumeList li .resumeBox .viewBtn{position: absolute; right: 30px; top:52px; width: 39px; height: 24px; line-height: 24px; border-radius: 4px; background-color: #000; color: #fff; font-weight: 700; font-size: 12px; text-align: center;}
+.applyBox .writeBtn{display: block; margin: 0 auto 53px; max-width: 240px; width: 100%; height: 36px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); text-align: center;  border: 1px solid #E9E9E9; border-radius: 4px;}
+.applyBox .writeBtn span{display: flex; justify-content: center; align-items:center; gap: 0 9px; font-size: 14px; color: #313131;}
+.applyBox .writeBtn span::before{content: ''; width: 11px; height: 10px; background: url(../assets/images/sub/Add_Icon.svg)no-repeat center;}
+
+@media (max-width: 1199px){
+  
+  .title{font-size: 18px; margin-bottom: 20px;}
+  .employmentDetailTop .textBox .titleBox h3{font-size: 18px;}
+  .employmentDetail h4{margin-bottom: 20px; font-size: 18px;}
+
+}
+
+@media (max-width: 767px){
+
+  .employmentDetailBox{margin-top: 0;}
+  .employmentDetailTop{margin-bottom: 35px; padding: 60px 0 20px;}
+  .employmentDetailTop .textBox .likeBtn{margin: 20px 0 0; position: static;}
+  .employmentDetailTop .textBox .titleBox{display: block;}
+  .employmentDetailTop .textBox .titleBox span{margin-top: 7px;}
+  .employmentDetailContent{flex-direction: column;}
+  .employmentDetailLeft{width: 100%;}
+  .employmentDetailRight{margin-bottom: 50px; width: 100%;}
+  .employmentDetail h4{margin-bottom: 25px;}
+  .applyBox .resumeList li .resumeBox .viewBtn{position: static; display: block; margin-top: 10px;}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

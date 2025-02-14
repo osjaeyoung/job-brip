@@ -1,0 +1,3 @@
+.subSearchBox{margin: 21px 0 37px; position: relative;}
+.subSearchBox input{display: block; position: relative; padding: 0 50px 0 16px; width: 100%; max-width: 679px; height: 59px; margin: 0 auto; border: 1px solid #E0E2E7; border-radius: 8px; background: url(../assets/images/sub/Search_Icon.svg)no-repeat 97% center;}
+.subSearchBox input::placeholder{color: #6F727A;}

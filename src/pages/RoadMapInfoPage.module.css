@@ -1,0 +1,21 @@
+.roadMapContent{padding: 90px 70px 55px!important;}
+.titleBox{margin-bottom: 0!important;}
+.titleBox h3{margin-bottom: 17px;}
+.titleBox p{text-align: center; color: #5F616D; font-weight: 500; }
+.imgBox{margin:0 0 -15px 27px;}
+.imgBox img{display: block; width: 100%; margin: 0 auto;}
+.infotext{margin-bottom: 40px; text-align: center; font-weight: 600; color: #000;}
+.infotext02{margin-bottom: 28px; font-size: 14px; text-align: center; font-weight: 600; color: #000;}
+
+.roadMapInfoList{margin-bottom: 62px;}
+.roadMapInfoList li{position: relative; padding: 33px 52px 33px 95px; margin-bottom: 15px; line-height: 1.2; background-color: #fff; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31); color: #000; font-weight: 500;}
+.roadMapInfoList li:last-child{margin-bottom: 0;}
+.roadMapInfoList li::before{content: ''; width: 48px; height: 40px; position: absolute; top:22px; left:26px; background: url(../assets/images/sub/Icon01.svg)no-repeat center; background-size: cover;}
+
+@media (max-width: 767px){
+
+  .roadMapInfoList li{margin-bottom: 10px; padding: 25px 20px 25px 65px;}
+  .roadMapInfoList li::before{width: 38px; height: 30px; top: 20px; left: 16px;} 
+  .roadMapInfoList{margin-bottom: 45px;}
+   
+}

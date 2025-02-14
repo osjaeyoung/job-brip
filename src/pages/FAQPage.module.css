@@ -1,0 +1,10 @@
+.faqTabBox{margin-bottom: 34px; display: flex; align-items: center; gap: 0 10px;}
+.faqTabBox button{color: #353A3C;  font-size: 12px; width: 62px; height: 33px;}
+.faqTabBox button.active{border-radius: 5px; background-color: #1C1B18; color: #fff; font-weight: 600;}
+.faqContentBox .faqContent{border-bottom: 1px solid #E9E9E9;}
+.faqContentBox .faqContent h4 .btn{position: relative; display: block; width: 100%; padding: 15px 42px 15px 35px; font-weight: 700; color: #313131; text-align: left;}
+.faqContentBox .faqContent h4 .btn::after{content: ''; width: 11px; height: 6px; right: 17px; position: absolute; top:50%; transform: translateY(-50%); background: url(../assets/images/sub/Arrow_Icon03.svg)no-repeat center;}
+.faqContentBox .faqContent h4 .btn.active::after{transform: translateY(-50%) rotate(-180deg);}
+.faqContentBox .faqContent h4 .btn::before{content: 'Q'; position: absolute; top:13px; left:8px; font-size: 16px; font-weight: 700; color: #000;}
+.faqContentBox p{padding: 0 0 16px; color: #313131; font-size: 14px; line-height: 1.4;}
+.categoryTitle{margin: 35px 0 15px; font-size: 16px;}

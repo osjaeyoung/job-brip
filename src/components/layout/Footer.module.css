@@ -1,0 +1,52 @@
+#footerBox{padding: 29px 0 42px; background-color: #191919;}
+#footerBox .footerLinkList{margin-bottom: 30px; display: flex; align-items: center; gap: 0 45px;}
+#footerBox .footerLinkList li{position: relative;}
+#footerBox .footerLinkList li::after{content: ''; position: absolute; top: 15px; right: -22px; width: 2px; height: 22px; background-color: #6C7072;}
+#footerBox .footerLinkList li:last-child::after{display: none;}
+#footerBox .footerLinkList li a{display: block; }
+#footerBox .footerLinkList li a span{position: relative; display: block; font-size: 20px; font-weight: 500; color: #6C7072; line-height: 2.5; transition: all .5s;}
+#footerBox .footerLinkList li a span::before{content: ''; position: absolute; left:0; bottom: -3px; width: 0; height: 2px; background-color: #fff; transition: all .5s;}
+#footerBox .footerLinkList li a:hover span{color: #fff}
+#footerBox .footerLinkList li a:hover span::before{width: 100%;}
+#footerBox  .footerBottom{display: flex; gap: 0 31px;}
+#footerBox .footerLogo a,
+#footerBox .footerLogo a img{display: block;}
+#footerBox address{padding-top: 18px; font-size: 14px; font-weight: 600; color: #6C7072; line-height: 1.8;}
+
+@media (max-width: 1199px){
+
+  #footerBox .footerLinkList li a span{font-size: 18px;}
+  #footerBox .footerLinkList li::after{top: 14px; height: 19px;}
+
+}
+
+@media (max-width: 1024px){
+
+  #footerBox  .footerBottom{display: block;}
+  #footerBox .footerLinkList{justify-content: center;}
+  #footerBox .footerLinkList li a span{font-size: 16px;}
+  #footerBox .footerLinkList li::after{top: 14px; height: 15px;}
+  #footerBox .footerLogo a img{margin: 0 auto;}
+  #footerBox address{text-align: center;}
+  #footerBox .footerLogo a img{width: 300px;}
+
+}
+
+@media (max-width: 767px){
+
+  #footerBox .footerLinkList{margin-bottom: 20px; gap: 0 35px;}
+  #footerBox .footerLinkList li a span{font-size: 14px;}
+  #footerBox .footerLinkList li::after{right: -18px; top: 11px; height: 13px;}
+  #footerBox address{font-size: 14px;}
+  
+}
+
+@media (max-width: 480px){
+
+  #footerBox .footerLinkList{flex-wrap: wrap; gap:0; }
+  #footerBox .footerLinkList li{width: 50%;}
+  #footerBox .footerLinkList li a{padding: 5px 0;}
+  #footerBox .footerLinkList li a span{text-align: center;}
+  #footerBox .footerLinkList li::after{display: none;}
+
+}

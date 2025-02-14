@@ -1,0 +1,16 @@
+.inputWrap{margin-bottom: 13px;}
+.signinContent{padding: 90px 70px 50px;}
+.subText{margin-bottom: 40px; color: #5E5C5C; font-size: 20px; font-weight: 500; line-height: 1.2; text-align: center;}
+.codeBox{margin:17px 0 45px; display: flex; align-items: center; justify-content: space-between;}
+.codeBox span{font-size: 12px; color: #737373;}
+.codeBox .codeBtn{width: 97px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50px; font-size: 12px; color: #313131; background-color: #F2F2F2; letter-spacing: -1px;}
+.title{margin-bottom: 30px!important;}
+
+@media (max-width: 1199px){
+
+  .signinContent{padding: 90px 30px 50px;}
+  .subText{font-size: 16px;}
+  .title{margin-bottom: 20px!important;}
+
+}
+

@@ -1,0 +1,13 @@
+.selectBox{margin-bottom: 55px;}
+.selectBox:last-child{margin-bottom: 0;}
+.selectBox .selectText{margin-bottom: 31px; font-weight: 700; color: #000; font-size: 20px; line-height: 1.4;}
+.selectBox .selectList li{margin-bottom: 16px;}
+.selectBox .selectList li:last-child{margin-bottom: 0;}
+.selectBox .selectList li .selectBtn{display: block; width: 100%; padding: 17px 10px 17px 35px; display: block; background-color: #FAFAFC; color: #000; border-radius: 10px; text-align: left;}
+.selectBox .selectList li .selectBtn.active{border: 3px solid #1C1B18;}
+
+@media (max-width: 767px){
+
+  .selectBox .selectText{margin-bottom: 20px; font-size: 18px;}
+
+}

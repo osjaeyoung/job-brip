@@ -1,0 +1,62 @@
+#headerBox{position: fixed; top:-100px; left:0; right:0; border-bottom: 1px solid #D9D9D9; z-index: 999; background-color: #fff; transition: all 1.5s;}
+#headerBox .navBox ul{display: flex; align-items: center;}
+#headerBox .navBox ul li a{display: block; padding: 25px 27px; color: #000; font-size: 20px; transition: all .5s;}
+#headerBox .navBox ul li a.active{color: #5A38D4;}
+#headerBox .navBox ul li a:hover{color: #5A38D4;}
+#headerBox .logoBox h1 a{display: block;}
+#headerBox .logoBox h1 a img{display: block;}
+#headerBox .headerContent{position: relative; display: flex; align-items: center;}
+#headerBox .mobileMenuBtn{display: none;}
+#headerBox .mobileMenuBox{display: none;}
+#headerBox.active{top:0;}
+
+.linkBox{position: absolute; top:50%; right:0; transform: translateY(-50%); display: flex; align-items: center; gap: 0 35px; z-index: 99;}
+.linkBox .searchBox{position: relative; overflow: hidden;}
+.linkBox .searchBox.active{overflow: visible;}
+.linkBox .searchBox .searchBtn{display: block; width: 27px; height: 27px; background: url(../../assets/images/common/search_icon.svg)no-repeat center; background-size: cover;}
+.linkBox .alarmBox{position: relative;}
+.linkBox .alarmBox .alarmBtn{display: block; width: 32px; height: 32px; background: url(../../assets/images/common/Alarm_Icon3.svg)no-repeat center; background-size: cover;} 
+.linkBox .loginBox .loginBtn{display: flex; align-items: center; justify-content: center; width: 77px; height: 48px; border-radius: 4px; background-color: #1C1B18; color: #fff; font-weight: 700; color: #fff;}
+.searchTextBox.active{opacity: 1; display: block; z-index: 9999;}
+.searchTextBox{opacity: 0; position: absolute; top:50%; transform: translateY(-50%); left:-275px; transition: all .5s; z-index: -999;}
+.searchTextBox .searchTextDel.active{display: block;}
+.searchTextBox .searchTextDel{display: none; width: 18px; height: 18px; position: absolute; top: 50%; right:15px; background: url(../../assets/images/common/Delete_Icon.svg)no-repeat center; transform: translateY(-50%);}
+.searchTextBox::before{content: ''; position: absolute; top: 50%; left:11px; transform: translateY(-50%); width: 12px; height: 12px; background: url(../../assets/images/common/Search_Icon02.svg)no-repeat center;}
+.searchTextBox input{padding: 0 50px 0 36px; width: 262px; height: 36px; border-radius: 8px; border: 1px solid #7985EB; background-color: #fff; font-size: 14px; color: #000;}
+.linkBox .searchKeywordBox{ padding: 25px 20px 20px; position: absolute; left:15px; right:15px; top:43px; background-color: #fff; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); z-index: 99;}
+.linkBox .searchKeywordBox .keywordText{display: block; margin-bottom: 20px; color: #737373; font-size: 14p; line-height: 1; font-weight: 500; border-radius: 5px;}
+.linkBox .searchKeywordBox .keywordList{display: flex; flex-wrap: wrap; gap: 12px 10px;}
+.linkBox .searchKeywordBox .keywordList li{display: flex; align-items: center; gap: 0 8px; padding: 6px 16px; border-radius: 50px; background-color: #F8F4FFF0;}
+.linkBox .searchKeywordBox .keywordList li span{font-size: 12px; color: #7985EB;}
+.linkBox .searchKeywordBox .keywordList li  .keywordDelBtn{width: 10px; height: 10px; background: url(../../assets/images/common/Close_Btn.svg)no-repeat center;}
+
+@media (max-width: 1199px){
+  
+  .linkBox{transform: none; top: auto; position: absolute; bottom: 30px; right: auto; width: 100%; justify-content: center; gap: 0 28px;}
+  .linkBox .loginBox .loginBtn{width: 60px; height: 40px; font-size: 14px;}
+  .linkBox .searchBox .searchBtn{width: 23px; height: 23px;}
+  .linkBox .alarmBox .alarmBtn{width: 29px; height: 29px;}
+
+  #headerBox .linkBox{display: none;}
+  #headerBox .navBox{display: none;}
+  #headerBox .logoBox h1 a{padding: 10px 0;}
+  #headerBox .logoBox h1 a img{position: relative; top: -3px;}
+  #headerBox .mobileMenuBtn{position: absolute; top:50%; transform: translateY(-50%); right:0; display: flex; flex-direction: column; align-items: flex-end; gap: 8px 0; width: 35px;}
+  #headerBox .mobileMenuBtn em:nth-child(1){width: 70%;}
+  #headerBox .mobileMenuBtn em{display: block; width: 100%; height: 2px; background-color: #000;}
+  #headerBox .mobileMenuBox .searchTextBox{margin: 15px 20px 0; position: relative; left: auto; transform: none; top: auto; z-index: 99999;}
+  #headerBox .mobileMenuBox .searchTextBox input{width: 100%;}
+  #headerBox .mobileMenuBox.active{right: 0;}
+  #headerBox .mobileMenuBox{padding: 30px 0 0; display: block; position: fixed; top:0; right:-3000px; bottom: 0; max-width: 350px; width: 100%; background-color: #FAFAFD; z-index: 999999; transition: all .5s;}
+  #headerBox .mobileMenuBox .mobileLogoBox{padding-left: 35px;}
+  #headerBox .mobileMenuBox .mobileLogoBox h1 a{ display: inline-block;}
+  #headerBox .mobileMenuBox .mobileNav ul{padding: 7px 0 0;}
+  #headerBox .mobileMenuBox .mobileNav ul li a{display: block; padding: 18px 15px 18px 45px; font-weight: 500; color: #000;}
+  #headerBox .mobileMenuBox .mobileCloseBtn{position: absolute; width: 25px;  top:20px; right:10px; display: block;}
+  #headerBox .mobileMenuBox .mobileCloseBtn::after{content: ''; position: absolute; top:12px; right:0; width: 100%; height: 2px; background-color: #000; transform: rotate(-45deg);} 
+  #headerBox .mobileMenuBox .mobileCloseBtn::before{content: ''; position: absolute ; top:12px; left:0; width: 100%; height: 2px; background-color: #000; transform: rotate(45deg);}
+  #headerBox .mobileMenuBox .linkBox{margin-top: 50px; display: flex; position: relative; bottom: auto;}
+  .bg{display: none; position: fixed; top:0; left:0; right:0; bottom: 0; background-color: rgba(0,0,0,.5); z-index: 99999;}
+  .bg.active{display: block;}
+
+}

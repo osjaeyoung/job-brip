@@ -1,0 +1,58 @@
+.infoTitle{margin-bottom: 25px; font-size: 20px; font-weight: 700; color: #000; line-height: 1.4; text-align: center;}
+.imgBox{margin-bottom: 35px;}
+.imgBox img{display: block; margin: 0 auto; max-width: 100%;}
+.subInfoText{margin-bottom: 24px; display: block; font-size: 20px; font-weight: 700; color: #000; text-align: center; line-height: 1.4;}
+.subInfoText02{display: block; margin-bottom: 60px; font-weight: 500; font-size: 16px; line-height: 1.7; color: #000; text-align: center;}
+.color{color: #1D9E12;}
+.mb{margin-bottom: 85px;}
+.ViewBox a{display: flex; gap: 0 12px; justify-content: center;}
+.ViewBox a .imgBox{margin-bottom: 0; flex-shrink: 0; width: 223px; height: 157px; border-radius: 10px; overflow: hidden;} 
+.ViewBox a .imgBox img{display: block; width: 100%; height: 100%; object-fit: cover;}
+.ViewBox a .textBox{padding: 20px 0 0;}
+.ViewBox a .textBox .topText{display: block; margin-bottom: 7px; color: #6C7072; line-height: 1.2;}
+.ViewBox a .textBox h6{margin-bottom: 19px; font-size: 20px; font-weight: 600; color: #000; line-height: 1.2;} 
+.ViewBox a .textBox .bottomText{display: block; line-height: 1.4; color: #6C7072;}
+.resultBox{margin-bottom: 60px;}
+.resultInfoBox h4{margin-bottom: 23px; color: #000; font-size: 20px; font-weight: 700; line-height: 1.4;}
+.resultInfoBox .resultBox h5{margin-bottom: 25px; padding-left: 20px; position: relative; font-size: 20px; font-weight: 700; line-height: 1.4;}
+.resultInfoBox .resultBox h5::before{content: ''; position: absolute; top: 10px; left:6px; width: 6px; height: 6px; border-radius: 50%; background-color: #000; }
+.resultInfoBox .scoreBox{margin-bottom: 32px;}
+.resultInfoBox .scoreBox .score01{position: relative; display: flex; align-items: center; justify-content: space-between;}
+.resultInfoBox .scoreBox .score01::before{width: 11px; height: 10px; content: ''; position: absolute; top:50%; left: 50%; margin-left: -5px;  transform: translateY(-50%); background: url(../assets/images/sub/Arrow_Icon.svg)no-repeat center; }
+.resultInfoBox .scoreBox .score01 span{display: flex; align-items: center; color: #000; height: 50px;}
+.resultInfoBox .scoreBox .score02{height: 12px; border-radius: 50px; background-color: #E9E9E9; overflow: hidden;}
+.resultInfoBox .infoText{margin-bottom: 27px; font-size: 20px; color: #000;}
+.recommendedRoadmap h4{margin-bottom: 21px; font-weight: 700; font-size: 20px; line-height: 1.4; color: #000;}
+.downloadBtn{ display: block; max-width: 202px; width: 100%; height: 48px; margin: 0 auto 46px; border: 1px solid #E9E9E9; box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);}
+.downloadBtn span{padding-left: 25px; position: relative; color: #313131;}
+.downloadBtn span::before{content: ''; width: 15px; height: 17px; position: absolute; left:0; top:3px; background: url(../assets/images/sub/PdfDownload_Icon.svg)no-repeat center;}
+
+@media (max-width: 767px){
+
+  .resultInfoBox .scoreBox{margin-bottom: 20px;}
+  .imgBox01{margin-bottom: 25px;}
+  .subInfoText{margin-bottom: 20px;}
+  .subInfoText,
+  .infoTitle{font-size: 16px;}
+  .subInfoText02{margin-bottom: 20px; font-size: 14px;}
+  .imgBox02{margin-bottom: 60px;}
+  .resultInfoBox h4{font-size: 16px;}
+  .resultInfoBox .resultBox h5{padding-left: 15px; margin-bottom: 10px; font-size: 16px;}
+  .resultInfoBox .resultBox h5::before{left: 5px; top: 10px; width: 3px; height: 3px;}
+  .resultInfoBox .infoText{margin-bottom: 15px; font-size: 16px}
+  .ViewBox a .textBox h6{font-size: 16px;}
+  .mb{margin-bottom: 60px;}
+
+}
+
+@media (max-width: 414px){
+
+  .ViewBox a .textBox h6{margin-bottom: 10px;}
+  .ViewBox a{flex-direction: column;}
+  .ViewBox a .imgBox{width: 100%; height: auto;}
+  .downloadBtn{font-size: 14px;}
+  .downloadBtn span::before{top: 2px;}
+  .ViewBox a .textBox .bottomText{font-size: 14px;}
+  
+}
+

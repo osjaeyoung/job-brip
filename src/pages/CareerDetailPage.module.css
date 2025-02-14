@@ -1,0 +1,70 @@
+.careerDetailBox{margin: 0;}
+.careerDetailTop{position: relative; margin-bottom: 25px; padding: 0 22px 25px 89px; border-bottom: 1px solid #D9D9D9;}
+.careerDetailTop .imgBox{margin-bottom: 25px; border-radius: 10px; overflow: hidden;}
+.careerDetailTop .imgBox img{display: block; width: 100%;}
+.careerDetailTop h3{display: flex; gap: 0 13px; margin-bottom: 16px; font-size: 20px;}
+.careerDetailTop h3 span{padding: 0 8px; display: flex; align-items: center; justify-content: center; background-color: rgba(67, 52, 224, 0.1); border-radius: 50px;
+ color: #4334E0; font-size: 14px; line-height: 1;}
+.careerDetailTop .date{display: block; color: #5F616D; line-height: 1;}
+.careerDetailTop .infoText{margin-bottom: 16px; color: #1C1B18;}
+.layoutBox{display: flex; gap: 0 12px; margin-left: 70px; }
+.careerDetailContent .box{padding:  0 0 60px;}
+.careerDetailContent .box h4{padding-bottom: 15px; margin-bottom: 15px; font-size: 20px; color: #000; border-bottom: 2px solid #4334E0;}
+.careerDetailContent{width: 487px;}
+.careerDetailContent .procedureBox .procedureDes{margin-bottom: 25px; padding: 23px 12px; font-weight: 500; color: #1C1B18; background-color: #FAFAFC; border-radius: 10px;}
+.careerDetailContent .procedureBox h5{margin-bottom: 39px; font-weight: 600; color: #1C1B18; font-size: 16px; text-align: center; line-height: 2.5;}
+.careerDetailContent .procedureBox h5 strong{color: #4334E0; }
+.careerDetailContent .procedureBox .procedureList{max-width: 334px; margin: 0 auto;}
+.careerDetailContent .procedureBox .procedureList li{margin-bottom: 10px; color: #1C1B18; font-size: 14px; font-weight: 500; border: 1px solid #1C1B18; border-radius: 20px; text-align: center; padding: 12px 10px;}
+.careerDetailContent .procedureBox .procedureList li:nth-child(2){background-color: #1C1B18; color: #fff;}
+.careerDetailContent .instructorBox .instructorDetailbox{padding: 0 30px 50px; border-radius: 10px; background-color: #FAFAFC;}
+.careerDetailContent .instructorBox .top{margin-bottom: 25px; display: flex; justify-content: space-between; padding: 25px 0; border-bottom: 1px solid #D8D8D8;}
+.careerDetailContent .instructorBox .top .textBox h5{margin-bottom: 17px; color: #000; font-weight: 700; font-size: 20px;}
+.careerDetailContent .instructorBox .top .textBox .historyList li{color: #595757; font-size: 14px; line-height: 1.4;}
+.careerDetailContent .instructorBox .top .imgBox{padding-top: 12px;}
+.careerDetailContent .instructorBox .top .imgBox img{display: block;}
+.careerDetailContent .instructorBox .historyDetailList01{margin-left: 10px;}
+.careerDetailContent .instructorBox .historyDetailList01 li{padding-left: 15px; position: relative; color: #595757; font-weight: 500; }
+.careerDetailContent .instructorBox .historyDetailList01 li::before{content: ''; position: absolute; top:10px; left:0;   width: 5px; height: 5px; background-color: #595757; border-radius: 50%;}
+.careerDetailContent .instructorBox .historyDetailList02{margin-left: 10px;}
+.careerDetailContent .curriculumBox .curriculumList{margin-top: 30px;}
+.careerDetailContent .curriculumBox .curriculumList li{display: flex; margin-bottom: 34px;}
+.careerDetailContent .curriculumBox .curriculumList li span{flex-shrink: 0; margin-right: 18px; font-weight: 600; color: #737373;}
+.careerDetailContent .curriculumBox .curriculumList li h5{width: calc(100% - 130px); color: #202224; font-size: 16px; font-weight: 400;}
+.careerDetailContent .curriculumBox .curriculumList li .time{display: flex; align-items: center; gap: 0 13px; color: #737373;}
+.careerDetailContent .curriculumBox .curriculumList li .time::before{width: 13px; height: 14px; content: ''; background: url(../assets/images/sub/time_icon.svg)no-repeat center;}
+.careerDetailBox .linkBox{width: 316px; padding-top: 10px;}
+.careerDetailBox .linkBox .button{margin: 0 0 35px;}
+.aiInfoBox{display: block; margin-top: 35px; padding: 32px 0 32px 22px; background-color: #FAFAFC; border-radius: 10px;}
+.aiInfoBox p{padding-left: 77px; position: relative; font-size: 12px; font-weight: 500; line-height: 1.7; color: #000; font-weight: 500;}
+.aiInfoBox p::before{content: ''; width: 38px; height: 42px; position: absolute; top:0; left:0; background: url(../assets/images/sub/AI_Icon.svg)no-repeat center;}
+.aiInfoBox p strong{font-weight: 600;}
+
+@media (max-width: 1199px){
+
+   .careerDetailContent .box{padding: 0 0 30px; margin: 30px 0 0;}
+   .careerDetailContent .box h4{margin-bottom: 20px; font-size: 18px;}
+   .careerDetailTop h3{font-size: 18px;}
+   .layoutBox{flex-direction: column; gap: 0; margin-left: 0; }
+   .careerDetailBox .linkBox{margin: 0 auto;}
+   .careerDetailContent {width: 100%;}
+   .careerDetailContent .instructorBox .top{flex-direction: column-reverse; gap:10px 0;}
+   .careerDetailContent .instructorBox .top .imgBox{padding-top: 0;}
+   
+}
+
+@media (max-width: 767px){
+
+   .careerDetailTop{margin-bottom: 20px; padding: 60px 0 20px;}
+
+}
+
+@media (max-width: 480px){
+
+   .careerDetailContent .curriculumBox .curriculumList li{padding: 0 0 30px; flex-direction: column; align-items: center; gap: 10px 0; border-bottom: 1px solid #D8D8D8;}
+   .careerDetailContent .curriculumBox .curriculumList li span{margin: 0;}
+   .careerDetailContent .curriculumBox .curriculumList li h5{width: auto;}
+
+}
+
+.arrowPrevBtn{position: absolute; top:0; left:0;}

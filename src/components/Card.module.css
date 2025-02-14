@@ -1,0 +1,26 @@
+.imgBox{border-radius: 10px; transition: all .5s}
+.imgBox .img{position: relative; padding-top: 79.7%; height: 0; margin-bottom: 23px; border-radius: 10px; overflow: hidden;}
+.imgBox .img img{display: block; position: absolute; top:0; left:0; right:0; bottom: 0; width: 100%; height: 100%; object-fit: cover; transition: all .5s;}
+.textBox .text01{display: block; margin-bottom: 5px; color: #6C7072;}
+.textBox h4{margin-bottom: 10px; color: #000; font-size: 20px; line-height: 1.2;}
+.textBox .text02{color: #6C7072;}
+.cardType .imgBox .img{padding-top: 63.5%;}
+.link:hover .imgBox{box-shadow: 0 10px 10px rgba(0,0,0,.2);}
+.link:hover .imgBox img{transform: scale(1.1);}
+.linkBtn{width: 28px; height: 24px; position: absolute; top:27px; right:15px; background: url(../assets/images/main/Link_Btn.svg)no-repeat center; }
+.linkBtn.active{background: url(../assets/images/main/Like_Active_Icon.svg)no-repeat center;}
+
+@media (max-width: 1199px){
+  
+  .textBox .text01,
+  .textBox .text02{font-size: 14px;}
+  .textBox h4{font-size: 18px;}
+
+}
+
+@media (max-width: 767px){
+
+  .imgBox{margin-bottom: 15px;}
+
+
+}

@@ -1,0 +1,38 @@
+.inquiryQuestionWrap{margin-top: 40px;}
+.inquiryQuestionBox .topBox{position: relative; padding:0 332px 20px 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #D9D9D9;} 
+.inquiryQuestionBox .topBox .box{display: flex; position: absolute; right:34px;}
+.inquiryQuestionBox .topBox .title{font-size: 20px; font-weight: 600; color: #000;}
+.inquiryQuestionBox .topBox .category{display: block; margin-right: 26px; color: #5088FF;}
+.inquiryQuestionBox .topBox .date{display: block; margin-right:47px; color: #343330;}
+.inquiryQuestionBox .topBox .status{color: #5088FF;}
+.inquiryQuestionBox .inquiryQuestionContent{padding: 30px 20px 50px 10px;}
+.inquiryQuestionBox .inquiryQuestionContent p{color: #000; font-weight: 500;}
+
+.inquiryAnswerBox{border-top: 1px solid #B3B3B3;}
+.inquiryAnswerBox .topBox{padding: 18px 18px 10px 0; display: flex; align-items: center; justify-content: space-between;}
+.inquiryAnswerBox .topBox .title{font-weight: 600; color: #000; font-size: 20px;}
+.inquiryAnswerBox .topBox .date{display: block; color: #343330;}
+.inquiryAnswerBox .inquiryAnswerContent{margin-top: 10px;}
+.inquiryAnswerBox .inquiryAnswerContent p{font-weight: 500; color: #000;}
+
+@media (max-width: 1199px){
+  
+  .inquiryQuestionBox .topBox{padding: 0 272px 20px 0;}
+  .inquiryQuestionBox .topBox .box{margin-top: 15px; gap: 0 20px;}
+  .inquiryQuestionBox .topBox span{font-size: 14px;}
+  .inquiryQuestionBox .topBox .date,
+  .inquiryQuestionBox .topBox .category{margin-right: 0;}
+  .inquiryQuestionBox .topBox .title,
+  .inquiryAnswerBox .topBox .title{font-size: 18px;}
+  .inquiryAnswerBox .topBox .date{font-size: 14px;}
+
+}
+
+@media (max-width: 767px){
+
+  .inquiryAnswerBox .topBox{display: block;}
+  .inquiryAnswerBox .topBox .date{margin-top: 15px;}
+  .inquiryQuestionBox .topBox{display: block; padding: 0 10px 10px 0;}
+  .inquiryQuestionBox .topBox .box{position: static;}
+
+}

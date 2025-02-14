@@ -1,0 +1,22 @@
+.content{padding: 42px 93px 50px 57px!important;}
+.resumeList{display: flex; flex-wrap: wrap; gap: 18px 2.48%;}
+.resumeList li{position: relative; width: 48.76%; padding: 54px 24px 19px 20px; border-radius: 5px; background-color: #fff; box-shadow: 4px 4px 44px rgba(218, 218, 218, 0.31);}
+.resumeList li .basicResume{position: absolute; top:15px; left:20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; width: 61px; height: 17px; border-radius: 50px; background-color: rgba(67, 52, 224, 0.1); color: #4334E0; font-size: 10px;}
+.resumeList li h5{margin-bottom: 15px; color: #000; font-weight: 600; font-size: 16px;}
+.resumeList li .date{font-size: 12px; color: #5F616D;}
+.resumeList li .viewBox{ position: absolute; top:17px; right:24px; }
+
+.btn{margin-top: auto;}
+
+@media (max-width: 1199px){
+
+  .content{padding: 42px 50px!important;}
+
+}
+
+@media (max-width: 767px){
+
+  .resumeList{gap: 15px 0;}
+  .resumeList li{width: 100%;}
+
+}

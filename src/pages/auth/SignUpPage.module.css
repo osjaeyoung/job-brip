@@ -1,0 +1,54 @@
+
+.title{margin-bottom: 46px!important;}
+.inputNicknameBox{display: flex; gap: 0 7px;}
+.inputNicknameBox input{width: 67%!important;}
+.inputNicknameBox .duplicateChkBtn{display: block; width: 103px; height: 48px; background-color: #1C1B18; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 500;} 
+.layoutBox{display: flex; gap: 0 10px}
+.inputEmailBox{display: flex; align-items: center; gap: 0 7px;}
+.inputEmailBox input{width: 90px!important;}
+.agreeChkBox{margin: 47px 0 50px;}
+.agreeChkBox .inputChkBox{display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;}
+.agreeChkBox .inputChkBox:last-child{margin-bottom: 0;}
+.agreeChkBox .inputChkBox input:checked + label::before{content: '✓'; text-align: center;}
+.agreeChkBox .inputChkBox label .allChk{font-weight: 600;}
+.agreeChkBox .inputChkBox label{margin-bottom: 0; padding-left: 41px; position: relative; font-weight: 500; color: #343330; cursor: pointer;}
+.agreeChkBox .inputChkBox label::before{content: ''; position: absolute; top:-2px; left:0; width: 24px; height: 24px; border: 2px solid #d9d9d9; border-radius: 5px;}
+.agreeChkBox .inputChkBox a{display: block; font-size: 12px; color: #656565; text-decoration: underline;} 
+.infoText{margin-top: 12px; font-size: 12px; line-height: 20px; color: #72777A;}
+.pwHiddenToggleBtn{width: 25px; height: 27px; position: absolute; top: 50%; right:19px; transform: translateY(-50%); background: url(../assets/images/login/Hidden_Icon.svg)no-repeat center;}
+.select{width: 110px; background-position-x: 86%!important;}
+
+@media (max-width: 1199px){
+
+  .signinContent{padding: 30px 30px 50px;}
+  .inputNicknameBox{flex-direction: column; gap: 7px;}
+  .inputNicknameBox input{width: 100%!important;}
+  .inputNicknameBox .duplicateChkBtn{width: 100%;}
+  .layoutBox{flex-direction: column; gap: 10px 0;}
+  .inputEmailBox input{width: 100%!important;}
+  .select{width: 100%!important; background-position-x: 95%!important;}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

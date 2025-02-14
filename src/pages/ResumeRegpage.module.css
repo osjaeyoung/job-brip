@@ -1,0 +1,16 @@
+.regBox{margin-bottom: 20px;}
+.regBox label{display: block; margin-bottom: 15px; color: #090A0A; font-weight: 500;}
+.userGreeting{margin-bottom: 46px;}
+.btn{margin-top: auto;}
+.imgBox{margin: 0 auto;}
+.subTitle{margin: 30px 0; color: #000; font-weight: 600; font-size: 20px;}
+.accordionSection{margin-bottom: 100px;}
+.accordionSection .accordionItem{margin: 45px 0 30px;}
+.accordionSection .button{position: relative; display: block; margin-bottom: 20px; color: #000; width: 100%; text-align: left; font-weight: 700; font-size: 20px;}
+.accordionSection .button::after{width: 17px; height: 9px; content: ''; position: absolute; top: 50%; transform: translateY(-50%); right:0; background: url(../assets/images/sub/arrow_icon07.svg)no-repeat center;}
+.accordionSection .button.active::after{transform: translateY(-50%) rotate(-180deg);}
+.imgFileBox{position: relative; margin: 50px auto 55px; cursor: pointer;}
+.imgFileBox img{position: absolute; right: 0; bottom: 0; display: block;}
+.fileLabel{margin-bottom: 30px; cursor: pointer;}
+.arrowPrevBtn{position: absolute; top:48px; left:57px;}
+.content{position: relative; padding: 42px 70px 50px 192px!important;}

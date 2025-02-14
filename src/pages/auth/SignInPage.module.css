@@ -1,0 +1,54 @@
+
+.title{margin-bottom: -40px!important;}
+.imgBox{position: relative; margin: 0 0 -40px -5px;}
+.imgBox img{display: block; margin: 0 auto;}
+.snsListBox{position: relative;}
+.snsListBox .easySignInBox{position: absolute; top:-45px; left: 50%; transform: translateX(-50%); width: 106px; height: 32px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #fff; font-size: 12px; font-weight: 700; background-color: #000; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);}
+.snsListBox .easySignInBox::after{content: ''; width: 13px; height: 13px; position: absolute;  bottom: -6px; left: 50%; transform: translateX(-50%); background: url(../assets/images/login/Icon01.svg)no-repeat center;}
+.snsListBox .snsList{margin-bottom: 25px; display: flex; justify-content: center; align-items: center;}
+.snsListBox .snsList li a{position: relative; display: block; width: 54px; height: 54px; border-radius: 50px; transition: all .5s;}
+.snsListBox .snsList li a:hover{transform: translateY(-10px);}
+.snsListBox .snsList li a::after{content: ''; position: absolute; top:54%; left: 50%; transform:translate(-50%, -50%);}
+.snsListBox .snsList li a.naverLogin,
+.snsListBox .snsList li a.kakaoLogin{width: 54px; height: 54px;}
+.snsListBox .snsList li a.naverLogin::after{width: 54px; height: 54px; background: url(../assets/images/login/Naver_Img.svg)no-repeat center; background-size: 100% auto;}
+.snsListBox .snsList li a.kakaoLogin{margin-right: 10px;}
+.snsListBox .snsList li a.kakaoLogin::after{width: 54px; height: 54px; background: url(../assets/images/login/Kakao_Img.svg)no-repeat center; background-size: 100% auto;}
+.snsListBox .snsList li a.googleLogin{width: 46px; height: 46px; box-shadow: 4px 4px 20px rgba(217, 217, 217, 1);}
+.snsListBox .snsList li a.googleLogin::after{width: 46px; height: 46px; background: url(../assets/images/login/Google_Img.svg)no-repeat center;}
+.signupLinkBox{display: flex; gap: 0 6px; justify-content: center;}
+.signupLinkBox span{color: #000;}
+.signupLinkBox a{color: #000; font-weight: 600; text-decoration: underline;}
+.pwFindLink{display: block; color: #737373; text-decoration: underline;}
+.signinFindBox{margin: 23px 0 35px; display: flex; justify-content: space-between; align-items: center;}
+.inputChkBox{display: flex; align-items: center; gap: 0 11px;}
+.inputChkBox label{margin: 0; color: #737373; cursor: pointer;}
+.inputBox{position: relative; margin-bottom: 16px; z-index: 99;}
+.inputBox input{height: 66px!important;}
+.inputBox:last-child{margin-bottom: 0;}
+.btn{margin: 60px auto 80px; max-width: 416px; height: 66px; font-size: 20px;}
+.signinContent{padding: 30px 90px 50px;}
+
+@media (max-width: 1199px){
+
+  .title{margin-bottom: -20px!important;}
+  .imgBox{margin: 0 0 -20px 15px;}
+  .imgBox img{max-width: 300px; width: 100%;}
+  .inputBox{margin-bottom: 7px;}
+  .signinContent{padding: 30px 30px 50px;}
+
+}
+
+@media (max-width: 767px){
+
+  .btn{margin: 20px auto 75px; max-width: none; height: 48px; font-size: 14px;}
+
+
+}
+
+@media (max-width: 414px){
+
+  .signinFindBox{flex-direction: column; gap: 20px 0;}
+  .signupLinkBox{margin-top: 50px; flex-direction: column; align-items: center; gap: 20px 0;}
+
+}

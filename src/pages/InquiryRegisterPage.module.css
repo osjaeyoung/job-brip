@@ -1,0 +1,19 @@
+.inquiryInfoText{margin: 25px 0 35px; padding: 19px 20px 19px 32px; color: #626262; background-color: #FAFAFC; border-radius: 5px;}
+.selectBox{margin-bottom: 19px;}
+.select{width: 100%;}
+.textareaBox{margin-bottom: 12px;}
+.textarea{padding: 30px 20px 20px 18px; width: 100%; height: 315px;}
+.form{width: 491px; margin: 0 auto;}
+.btn{margin: 33px auto;}
+
+@media (max-width: 1199px){
+
+  .form{width: 100%;}
+
+}
+
+@media (max-width: 767px){
+
+  .inquiryInfoText{margin: 25px 0 25px; padding: 15px 20px; font-size: 14px;}
+
+}

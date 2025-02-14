@@ -1,0 +1,27 @@
+.popupWrap{opacity: 0; position: fixed; top:0; left:0; width: 100%; height: 100%; background-color: rgba(0,0,0,.5); display: flex; justify-content: center; align-items: center; z-index: -999; transition: opacity .3s ease-in-out;}
+.popupWrap.active{opacity: 1; z-index: 999;}
+.popupContent{position: relative; max-width: 520px; width: 100%; background-color: #fff; border-radius: 12px; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05); z-index: 99; overflow: hidden; transition: transform .3s ease-in-out;}
+.popupContent .popupTop{padding: 24px 40px 40px 40px;}
+.popupContent .popupTop .title{font-size: 20px; font-weight: 700; color: #232325; line-height: 1.4;}
+.popupContent .popupTop .subText{margin-top: 16px; color: #232325; font-weight: #232325;}
+.popupContent .popupBottom{display: flex; align-items: center; justify-content: flex-end; padding: 0 40px; height: 80px; background-color: #F7F7F9;}
+.popupContent .btnBox{display: flex; align-items: center; justify-content: flex-end ;}
+.popupContent .btnBox .btn{padding: 12px; border-radius: 8px; font-weight: 700;}
+.popupContent .btnBox .confirmBtn{background-color: #1C1B18; color: #fff;}
+.popupContent .closeBtn{position: absolute; top:32px; right:46px; width: 14px; height: 14px; background: url(../assets/images/common/CloseBtn.svg)no-repeat center;}
+
+@media (max-width: 1199px){
+
+  .popupContent{width: 90%;}
+  .popupContent .popupTop{padding: 36px 40px 30px 20px;}
+  .popupContent .popupTop p{font-size: 18px;}
+  .popupContent .closeBtn{top: 20px; right: 20px;}
+  .popupContent .popupBottom{padding: 0 20px;}
+
+}
+
+@media (max-width: 767px){
+
+  .popupContent .popupTop{padding: 36px 40px 30px 20px;}
+
+}

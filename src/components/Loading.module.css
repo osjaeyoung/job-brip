@@ -1,0 +1,4 @@
+.loadingBox{height: 100vh; display: flex; justify-content: center; align-items: center;  flex-direction: column;  text-align: center;}
+.loadingText{color: #202224; margin-bottom: 15px;}
+
+.basicLoadingBox{margin: 20px 0; height: auto;}

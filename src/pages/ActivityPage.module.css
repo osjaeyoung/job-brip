@@ -1,0 +1,29 @@
+.activityList li{position: relative; padding: 32px 30px 40px 40px; border-bottom: 1px solid #EAEAEA;}
+.activityList li .topBox{margin-bottom: 26px; display: flex; align-items: center; gap: 0 26px;}
+.activityList li .topBox .name{display: block; font-weight: 600; color: #000;}
+.activityList li .topBox .date{color: #6C7072; font-weight: 500; font-size: 14px;}
+.activityList li .content{margin-bottom: 41px; color: #000; line-height: 1.7;}
+.activityList li .btnWrap{display: flex; align-items: center; gap: 0 35px;}
+.activityList li .btnBox{display: flex; align-items: center; gap: 0 20px;}
+.activityList li .btnBox .likeBtn{display: block; width: 28px; height: 24px; background: url(../assets/images/sub/Link_Btn.svg)no-repeat center;}
+.activityList li .btnBox .number{color: #000;}
+.activityList li .btnBox .comment{width: 26px; height: 26px; background: url(../assets/images/sub/Comments_Icon.svg)no-repeat center;}
+.activityList li .viewBox{position: absolute; top:32px; right:0;}
+
+@media (max-width: 1199px){
+
+  .activityList li{padding: 32px 30px 40px 0;}
+
+}
+
+@media (max-width: 767px){
+
+  .activityList li{padding: 32px 0 40px 0;}
+
+}
+
+
+.viewBox .viewBtn{display: block; width: 3px; height: 16px;background: url(../assets/images/sub/Setting_Btn.svg)no-repeat center;}
+.viewBox .btnBox{display: flex; align-items: center; flex-direction: column; justify-content: center; position: absolute; top:-12px; right: -60px; width: 48px; height: 78px; border-radius: 6px; background-color: #fff; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.10); z-index: 999;}
+.viewBox .btnBox button{display: block; width: 40px; height: 33px; font-size: 13px; color: #415980;}
+.viewBox .btnBox button.active{background-color: #F3F7FE; border-radius: 4px;}
