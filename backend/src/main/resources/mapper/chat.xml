@@ -59,9 +59,10 @@
         SELECT
             id,
             room_id as roomId,
-            sender_cuid as senderId,
+            sender_cuid as senderCuid,     <!-- senderId를 senderCuid로 변경 -->
+            sender_nickname as senderNickname,  <!-- 닉네임 필드 추가 -->
             content,
-            created_at as createdAt
+            DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as createdAt
         FROM chat_messages
         WHERE room_id = #{roomId}
         ORDER BY created_at ASC

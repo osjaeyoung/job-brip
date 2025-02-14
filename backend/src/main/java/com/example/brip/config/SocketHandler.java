@@ -167,10 +167,18 @@ public class SocketHandler extends TextWebSocketHandler {
                 if (chatRoom.getUserIds().size() < chatRoom.getMaxUsers()) {
                     chatRoom.getUserIds().add(session.getId());
                     
+                    List<Map<String, Object>> chatHistory = sqlSession.selectList("org.mybatis.chat.selectMessagesByRoomId", roomId);
+                    System.out.println("채팅 히스토리: " + chatHistory);  // 채팅 히스토리 로그
+
                     // 입장 성공 메시지 전송
                     JSONObject response = new JSONObject();
                     response.put("protocol", "JOIN_ROOM_SUCCESS");
                     response.put("roomId", roomId);
+                    response.put("chatHistory", chatHistory);
+
+                    String responseStr = response.toString();
+                    System.out.println("전송할 메시지: " + responseStr);  // 전송할 메시지 로그
+                    
                     session.sendMessage(new TextMessage(response.toString()));
                 }
             }
