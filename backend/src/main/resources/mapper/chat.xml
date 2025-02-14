@@ -47,11 +47,13 @@
         INSERT INTO chat_messages (
             room_id,
             sender_cuid,
-            content
+            content,
+            sender_nickname
         ) VALUES (
             #{roomId},
             #{senderId},
-            #{content}
+            #{content},
+            #{senderNickname}
         )
     </insert>
 

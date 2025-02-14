@@ -209,6 +209,7 @@ public class SocketHandler extends TextWebSocketHandler {
                 params.put("roomId", roomId);
                 params.put("senderId", cuid);
                 params.put("content", msg.get("content"));
+                params.put("senderNickname", nickname);
                 sqlSession.insert("org.mybatis.chat.insertChatMessage", params);
 
                 // 브로드캐스트
@@ -228,7 +229,7 @@ public class SocketHandler extends TextWebSocketHandler {
         ChatRoom room = chatRooms.get(roomId);
         if (room != null) {
             room.getUserIds().remove(session.getId());
-            broadcastRoomList();
+            //broadcastRoomList();
         }
     }    
 }
