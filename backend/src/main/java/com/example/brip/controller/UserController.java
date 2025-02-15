@@ -289,113 +289,125 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    // 비번찾기 : 인증코드 인증
-    @PostMapping("/verify-code")
-    public ResponseEntity<Map<String, String>> verifyCode(@RequestBody Map<String, String> request) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            String email = request.get("email");
-            String code = request.get("code");
-            // 이메일 유효성 검사
-            if (email == null || email.trim().isEmpty()) {
-              response.put("result", "fail");
-              response.put("message", "이메일을 입력해주세요.");
-              return ResponseEntity.badRequest().body(response);
-            }
-            // 이메일 형식 검사
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                response.put("result", "fail");
-                response.put("message", "올바른 이메일 형식이 아닙니다.");
-                return ResponseEntity.badRequest().body(response);
-            }
-            // 인증코드 유효성 검사
-            if (code == null || code.trim().isEmpty()) {
-                response.put("result", "fail");
-                response.put("message", "인증코드를 입력해주세요.");
-                return ResponseEntity.badRequest().body(response);
-            }
 
-            if (emailService.verifyCode(email, code)) {
-                response.put("result", "success");
-                response.put("message", "인증이 완료되었습니다.");
-            } else {
-                response.put("result", "fail");
-                response.put("message", "잘못된 인증코드입니다.");
-            }
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
+
+// 인증코드 인증
+@PostMapping("/verify-code")
+public ResponseEntity<Map<String, String>> verifyCode(@RequestBody Map<String, String> request, HttpServletRequest httpRequest) {
+    Map<String, String> response = new HashMap<>();
+    try {
+        String email = request.get("email");
+        String code = request.get("code");
+        // 이메일 유효성 검사
+        if (email == null || email.trim().isEmpty()) {
             response.put("result", "fail");
-            response.put("message", "인증 처리 중 오류가 발생했습니다.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            response.put("message", "이메일을 입력해주세요.");
+            return ResponseEntity.badRequest().body(response);
         }
-    } 
-    
-    //보안코드 필요해보임
-    //비밀번호 변경기능
-    @PostMapping("/reset-password")
-    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            // 필수 입력값 검증
-            String email = request.get("email");
-            String newPassword = request.get("password");
+        // 이메일 형식 검사
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            response.put("result", "fail");
+            response.put("message", "올바른 이메일 형식이 아닙니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+        // 인증코드 유효성 검사
+        if (code == null || code.trim().isEmpty()) {
+            response.put("result", "fail");
+            response.put("message", "인증코드를 입력해주세요.");
+            return ResponseEntity.badRequest().body(response);
+        }
 
-            // null 체크 및 빈 문자열 체크
-            if (email == null || email.trim().isEmpty()) {
-                response.put("result", "fail");
-                response.put("message", "이메일을 입력해주세요.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            if (newPassword == null || newPassword.trim().isEmpty()) {
-                response.put("result", "fail");
-                response.put("message", "새로운 비밀번호를 입력해주세요.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            // 이메일 형식 검증 (선택적)
-            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                response.put("result", "fail");
-                response.put("message", "올바른 이메일 형식이 아닙니다.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            // 비밀번호 유효성 검사 (예: 최소 8자, 영문/숫자/특수문자 포함)
-            if (!newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")) {
-                response.put("result", "fail");
-                response.put("message", "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.");
-                return ResponseEntity.badRequest().body(response);
-            }
-
-            // 이메일 존재 여부 확인
-            Integer userExists = sqlSession.selectOne("org.mybatis.user.countByEmail", email);
-            if (userExists == 0) {
-                response.put("result", "fail");
-                response.put("message", "존재하지 않는 이메일입니다.");
-                return ResponseEntity.ok(response);
-            }
-
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String encodedPassword = encoder.encode(newPassword);
-
-            Map<String, Object> params = new HashMap<>();
-            params.put("email", email);
-            params.put("password", encodedPassword);
-
-            sqlSession.update("org.mybatis.user.updatePassword", params);
+        if (emailService.verifyCode(email, code)) {
+            // 인증 성공 시 세션에 인증 정보 저장
+            httpRequest.getSession().setAttribute("verified_email", email);
+            httpRequest.getSession().setAttribute("verification_time", System.currentTimeMillis());
+            
             response.put("result", "success");
-            response.put("message", "비밀번호가 변경되었습니다.");
-            
-            return ResponseEntity.ok(response);
-            
-        } catch (Exception e) {
+            response.put("message", "인증이 완료되었습니다.");
+        } else {
             response.put("result", "fail");
-            response.put("message", "오류가 발생했습니다.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            response.put("message", "잘못된 인증코드입니다.");
         }
-    } 
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        response.put("result", "fail");
+        response.put("message", "인증 처리 중 오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+}
 
+// 비밀번호 변경 기능
+@PostMapping("/reset-password")
+public ResponseEntity<Map<String, String>> resetPassword(
+        @RequestBody Map<String, String> request,
+        HttpServletRequest httpRequest) {
+    Map<String, String> response = new HashMap<>();
+    try {
+        String email = request.get("email");
+        String newPassword = request.get("password");
 
+        // 인증 여부 확인
+        String verifiedEmail = (String) httpRequest.getSession().getAttribute("verified_email");
+        Long verificationTime = (Long) httpRequest.getSession().getAttribute("verification_time");
+        
+        // 인증되지 않았거나, 인증된 이메일이 다르거나, 인증 후 30분이 지난 경우
+        if (verifiedEmail == null || !verifiedEmail.equals(email) || 
+            verificationTime == null || System.currentTimeMillis() - verificationTime > 30 * 60 * 1000) {
+            response.put("result", "fail");
+            response.put("message", "이메일 인증이 필요합니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 기존 유효성 검사...
+        if (email == null || email.trim().isEmpty()) {
+            response.put("result", "fail");
+            response.put("message", "이메일을 입력해주세요.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            response.put("result", "fail");
+            response.put("message", "새로운 비밀번호를 입력해주세요.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            response.put("result", "fail");
+            response.put("message", "올바른 이메일 형식이 아닙니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (!newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")) {
+            response.put("result", "fail");
+            response.put("message", "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 비밀번호 변경 처리
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(newPassword);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("email", email);
+        params.put("password", encodedPassword);
+
+        sqlSession.update("org.mybatis.user.updatePassword", params);
+        
+        // 인증 정보 세션에서 삭제
+        httpRequest.getSession().removeAttribute("verified_email");
+        httpRequest.getSession().removeAttribute("verification_time");
+
+        response.put("result", "success");
+        response.put("message", "비밀번호가 변경되었습니다.");
+        
+        return ResponseEntity.ok(response);
+        
+    } catch (Exception e) {
+        response.put("result", "fail");
+        response.put("message", "오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+}
     //--------------------------------------------------------
     // 프로필 조회
     @GetMapping("/profile")
