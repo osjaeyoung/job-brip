@@ -127,6 +127,33 @@ public class UserController {
       }
     }    
 
+    //이메일과 닉네임 정보 제거됨(중복체크 로그인 방지)
+    @PostMapping("/withdraw")
+    public ResponseEntity<Map<String, String>> withdrawUser(HttpServletRequest request) {
+        Map<String, String> response = new HashMap<>();
+        
+        try {
+            String userId = (String) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("result", "fail");
+                response.put("message", "로그인이 필요합니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+    
+            // 회원 탈퇴 처리
+            sqlSession.update("org.mybatis.user.withdrawUser", userId);
+    
+            response.put("result", "success");
+            response.put("message", "회원 탈퇴가 완료되었습니다.");
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "회원 탈퇴 처리 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
     //로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, Object> loginData, HttpServletRequest request) {

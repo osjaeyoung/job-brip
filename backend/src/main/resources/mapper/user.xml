@@ -61,4 +61,14 @@
             birth_date = #{birthDate}
         WHERE id = #{userId}
     </update>
+    <!-- 탈퇴 -->
+    <update id="withdrawUser" parameterType="string">
+        UPDATE users 
+        SET 
+            is_deleted = true,
+            deleted_at = CURRENT_TIMESTAMP,
+            email = CONCAT(email, '_', id, '_withdrawn'),  /* 이메일 재사용 방지 */
+            nickname = CONCAT(nickname, '_', id, '_withdrawn')  /* 닉네임 재사용 방지 */
+        WHERE id = #{userId}
+    </update>
 </mapper>
