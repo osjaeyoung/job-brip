@@ -33,12 +33,22 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         token = token.substring(7);
 
         try {
-            // 토큰 유효성 검사
             if (jwtTokenProvider.validateToken(token)) {
-                // 토큰에서 사용자 ID 추출
                 String userId = jwtTokenProvider.getUserIdFromToken(token);
-                // 요청에 사용자 ID 설정
+                String role = jwtTokenProvider.getRoleFromToken(token);
+                
+                // URL이 /api/admin으로 시작하는 경우
+                if (request.getRequestURI().startsWith("/api/admin")) {
+                    if (!"ADMIN".equals(role)) {
+                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                        response.setContentType("application/json");
+                        response.getWriter().write("{\"message\": \"관리자 권한이 필요합니다.\"}");
+                        return false;
+                    }
+                }
+
                 request.setAttribute("userId", userId);
+                request.setAttribute("role", role);
                 return true;
             }
         } catch (Exception e) {

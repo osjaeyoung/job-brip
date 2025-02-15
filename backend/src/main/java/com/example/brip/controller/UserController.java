@@ -196,8 +196,32 @@ public class UserController {
           response.put("message", "로그인 처리 중 오류가 발생했습니다.");
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
       }
-    }    
+    }  
 
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            String userId = (String) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("result", "fail");
+                response.put("message", "이미 로그아웃된 상태입니다.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            // JWT는 클라이언트 측에서 제거되므로, 서버에서는 성공 응답만 보냄
+            response.put("result", "success");
+            response.put("message", "로그아웃되었습니다.");
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("result", "fail");
+            response.put("message", "로그아웃 처리 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    
     //비번찾기 : 인증코드 발송
     @PostMapping("/send-verification")
     public ResponseEntity<Map<String, String>> sendVerification(@RequestBody Map<String, String> request) {

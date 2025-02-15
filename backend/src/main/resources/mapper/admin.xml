@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.admin">
+
+    <!-- 관리자 ID로 정보 조회 -->
+    <select id="getAdminById" parameterType="String" resultType="java.util.Map">
+        SELECT 
+            id,
+            admin_id,
+            password,
+            created_at
+        FROM admin
+        WHERE admin_id = #{adminId}
+    </select>
+
+</mapper>

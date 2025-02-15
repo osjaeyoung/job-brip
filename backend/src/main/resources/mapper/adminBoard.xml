@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.adminBoard">
+
+    <!-- 공지사항 목록 조회 -->
+    <select id="getNoticeList" parameterType="map" resultType="map">
+        SELECT 
+            notice_id,
+            title,
+            content,
+            DATE_FORMAT(created_at, '%Y-%m-%d %H:%i') as created_at
+        FROM notices
+        <where>
+            <if test="search != null and search != ''">
+                AND (title LIKE CONCAT('%', #{search}, '%') 
+                OR content LIKE CONCAT('%', #{search}, '%'))
+            </if>
+        </where>
+        ORDER BY 
+        <choose>
+            <when test="sort == 'oldest'">created_at ASC</when>
+            <otherwise>created_at DESC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 공지사항 등록 -->
+    <insert id="insertNotice" parameterType="map">
+        INSERT INTO notices (
+            title,
+            content
+        ) VALUES (
+            #{title},
+            #{content}
+        )
+    </insert>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNotice" parameterType="map">
+        UPDATE notices 
+        SET 
+            title = #{title},
+            content = #{content}
+        WHERE notice_id = #{noticeId}
+    </update>
+
+    <!-- 문의 목록 조회 -->
+    <select id="getInquiryList" resultType="map">
+        SELECT 
+            i.inquiry_id,
+            i.category,
+            i.title,
+            i.content,
+            i.status,
+            i.answer,
+            u.name as user_name,
+            DATE_FORMAT(i.created_at, '%Y-%m-%d %H:%i') as created_at,
+            DATE_FORMAT(i.answer_date, '%Y-%m-%d %H:%i') as answer_date
+        FROM inquiries i
+        JOIN users u ON i.user_id = u.id
+        ORDER BY i.created_at DESC
+    </select>
+
+    <!-- 문의 답변 업데이트 -->
+    <update id="updateInquiryAnswer" parameterType="map">
+        UPDATE inquiries 
+        SET 
+            answer = #{answer},
+            status = '답변완료',
+            answer_date = CURRENT_TIMESTAMP
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+    <!-- 문의 상세 조회 -->
+    <select id="getInquiryDetail" parameterType="long" resultType="map">
+        SELECT 
+            i.inquiry_id,
+            i.category,
+            i.title,
+            i.content,
+            i.status,
+            i.answer,
+            i.image_url1,
+            i.image_url2,
+            i.image_url3,
+            u.name as user_name,
+            u.email as user_email,
+            DATE_FORMAT(i.created_at, '%Y-%m-%d %H:%i') as created_at,
+            DATE_FORMAT(i.answer_date, '%Y-%m-%d %H:%i') as answer_date
+        FROM inquiries i
+        JOIN users u ON i.user_id = u.id
+        WHERE i.inquiry_id = #{inquiryId}
+    </select>
+</mapper>

@@ -217,3 +217,16 @@ CREATE TABLE notification (
     FOREIGN KEY (user_id) REFERENCES users(id),
     INDEX idx_user_created (user_id, created_at DESC) COMMENT '사용자별 최신 알림 조회용 인덱스'
 );
+
+
+
+CREATE TABLE admin (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    admin_id VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 초기 관리자 계정 생성 (비밀번호는 "test1234@" 이라고 가정)
+INSERT INTO admin (admin_id, password) 
+VALUES ('admin', '$2a$10$I6xrz1A8qsEPrIsJwEuTKe56CqG991Vp63L0VsbxWm7sLQ84Q7Pa6');
