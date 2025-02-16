@@ -1,0 +1,121 @@
+.mailFormWrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #F2F2F2;
+  z-index: 999999;
+  padding: 0 20px;
+  overflow-y: auto;
+}
+
+.mailFormWrap .mailFormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.mailFormWrap .mailFormHeader {
+  padding: 32px 0 20px;
+}
+
+.mailFormWrap .mailFormSection {
+  padding: 96px 20px 0;
+  min-height: 600px;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(26, 26, 26, 0.102);
+  border-radius: 25px;
+}
+
+.mailFormWrap .mailFormSection .logoBox {
+  margin-bottom: 49px;
+}
+
+.mailFormWrap .mailFormSection h2 a {
+  display: block;
+}
+
+.mailFormWrap .mailFormSection h2 img {
+  display: block;
+  margin: 0 auto;
+  width: 125px;
+}
+
+.mailFormWrap .mailFormSection .infoText01 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px 0;
+  position: relative;
+  margin-bottom: 21px;
+  color: #000;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.mailFormWrap .mailFormSection .infoText01::before {
+  content: '';
+  width: 20px;
+  height: 29px;
+  background: url(../assets/images/sub/lock_icon.svg)no-repeat center;
+}
+
+.mailFormWrap .mailFormSection .codeNumber {
+  width: 111px;
+  height: 40px;
+  margin: 0 auto 37px;
+  line-height: 40px;
+  background-color: #1C1B18;
+  font-size: 20px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mailFormWrap .mailFormSection .infoText02 {
+  text-align: center;
+  color: #1A1A1A;
+}
+
+.mailFormWrap .mailFormFooter {
+  padding: 66px 0 33px;
+  text-align: center;
+}
+
+.mailFormWrap .mailFormFooter .infoText01 {
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #000;
+}
+
+.mailFormWrap .mailFormFooter .infoText02 {
+  margin-bottom: 30px;
+  font-size: 12px;
+  color: #1A1A1A;
+  font-weight: 700;
+}
+
+.mailFormWrap .mailFormFooter .infoText03 {
+  font-size: 12px;
+  color: #1A1A1A;
+}
+
+@media (max-width: 1199px) {
+
+  .mailFormWrap .mailFormSection{border-radius: 10px;}
+
+  .mailFormWrap .mailFormSection .infoText01 {
+    gap: 15px 0;
+    font-size: 20px;
+  }
+
+  .mailFormWrap .mailFormSection .codeNumber {
+    font-size: 18px;
+  }
+
+}

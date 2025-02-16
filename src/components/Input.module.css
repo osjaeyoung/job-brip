@@ -1,6 +1,7 @@
 .label{display: block; color: #090A0A; font-weight: 500;}
 .input:not([type="checkbox"]):not([type="radio"]){display: block; width: 100%; padding: 0 0 0 16px; height: 48px; border: 1px solid #E3E5E5; border-radius: 8px; color: #000;}
 .input::placeholder{color: #72777A;}
+.input.error{border: 1px solid #f55050!important;}
 
 @media (max-width: 1199px){
 

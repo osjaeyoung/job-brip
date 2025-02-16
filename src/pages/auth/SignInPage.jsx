@@ -7,108 +7,125 @@ import Button from "../../components/Button";
 import style from "./SignInPage.module.css";
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
-import { userData } from "../../data/userData"
+import { useAuthStore } from '../../store/useAuthStore';
+import { login } from "../../api/auth";
 
 export default function SignInPage() {
-  const [disabled, setDisabled] = useState(true); // 버튼 비활성화 상태
-  const [email, setEmail] = useState(''); // 이메일 입력 상태
-  const [password, setPassword] = useState(''); // 비밀번호 입력 상태
-  const [error, setError] = useState(''); // 이메일, 비밀번호 오류 메세지
-  const [emailError, setEmailError] = useState(''); // 이메일 오류 메세지
-  const [passwordError, setPasswordError] = useState(''); // 비밀번호 오류 메세지
-  const [isRemembered, setIsRemembered] = useState(false); // 아이디 저장 체크 상태
-  const navigate = useNavigate(); // 페이지 이동을 위한 hook
 
-  const validEmail = userData.email;
-  const validPassword = userData.password;
+  // 활성화, 비활성화 상태관리
+  const [disabled, setDisabled] = useState(true);
 
-  // 이메일 형식 정규식
+  // 페이지 이동을 위한 hook
+  const navigate = useNavigate();
+
+  // 상태 관리 함수
+  const { setAuthData } = useAuthStore();
+
+  // 이메일 입력 상태관리
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  // 이메일 검사
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // 로그인 페이지가 렌더링될 때 이미 로그인된 상태라면, 홈 페이지로 리디렉션
-  useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
-    if (authToken) {
-      navigate("/"); // 이미 로그인된 상태라면 홈 페이지로 리디렉션
-    }
-  }, [navigate]);
+  // 비밀번호 입력 상태관리
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  // 이메일 유효성 검사
+  // 아이디 저장 체크 상태관리
+  const [isRemembered, setIsRemembered] = useState(false);
+
+  //이메일 유효성 검사
   function handleEmailChange(e) {
     const emailValue = e.target.value;
+
+    // 이메일 상태 업데이트
     setEmail(emailValue);
-
-    setError('');
-    setEmailError(''); // 이메일 오류 초기화
-
     if (!emailValue) {
-      setEmailError('이메일을 확인해주세요.');
+      setEmailError('이메일을 입력해주세요.');
+      return;
     } else if (!emailRegex.test(emailValue)) {
       setEmailError('유효한 이메일 형식을 입력해주세요.');
+      return;
+    } else {
+      setEmailError('');
     }
 
-    // 이메일 유효성 검사 후 버튼 상태 체크
-    checkButtonEnable(emailValue, password, emailError, passwordError);
   }
 
-  // 비밀번호 유효성 검사
+  //비밀번호 유효성 검사
   function handlePasswordChange(e) {
     const passwordValue = e.target.value;
     setPassword(passwordValue);
 
-    setError('');
-    setPasswordError(''); // 비밀번호 오류 초기화
-
     if (!passwordValue) {
       setPasswordError('비밀번호를 입력해주세요.');
-    }
-
-    // 비밀번호 유효성 검사 후 버튼 상태 체크
-    checkButtonEnable(email, passwordValue, emailError, passwordError);
-  }
-
-  // 버튼 활성화/비활성화 체크
-  function checkButtonEnable(emailValue, passwordValue, emailError, passwordError) {
-    // 이메일과 비밀번호 모두 유효한지, 오류가 없을 때만 버튼 활성화
-    if (emailRegex.test(emailValue) && passwordValue && !emailError && !passwordError) {
-      setDisabled(false); // 조건이 맞으면 버튼 활성화
+      return;
     } else {
-      setDisabled(true); // 조건이 맞지 않으면 버튼 비활성화
+      setPasswordError('');
     }
+
   }
-
-  // 로그인 처리 함수
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    // 로컬스토리지에서 사용자 정보를 가져옴
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-
-    // 이메일과 비밀번호 비교
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
-      localStorage.setItem("authToken", "dummyToken_12345");  // 인증 토큰 저장
-      if (isRemembered) {
-        localStorage.setItem("savedEmail", email); // 아이디 저장 체크된 경우 이메일 저장
-      }
-      navigate("/");  // 로그인 후 홈 화면으로 이동
-    } else {
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.');
-    }
-  }
-
-  // 컴포넌트가 마운트될 때 저장된 이메일을 불러옵니다.
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("savedEmail");
-    if (savedEmail) {
-      setEmail(savedEmail);
-      setIsRemembered(true); // "아이디 저장" 체크 상태를 true로 설정
-    }
-  }, []);
 
   // 아이디 저장 체크박스 상태 변화
   function handleRememberMeChange(e) {
     setIsRemembered(e.target.checked);
   }
+
+  // 컴포넌트 마운트 시 로컬 스토리지에서 저장된 아이디 가져오기
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('savedEmail');
+    if (savedEmail) {
+
+      // 로컬 스토리지에서 아이디가 있으면 그 값을 입력
+      setEmail(savedEmail);
+
+      // 체크박스도 ON으로 설정
+      setIsRemembered(true);
+
+    }
+  }, []);
+
+  // 버튼 활성화/비활성화 체크
+  useEffect(() => {
+    // 이메일과 비밀번호가 유효한지, 오류가 없을 때만 버튼 활성화
+    if (emailRegex.test(email) && password && !emailError && !passwordError) {
+      setDisabled(false); // 조건이 맞으면 버튼 활성화
+    } else {
+      setDisabled(true); // 조건이 맞지 않으면 버튼 비활성화
+    }
+  }, [email, password, emailError, passwordError]); // 이메일과 비밀번호 상태가 변경될 때마다 실행
+
+  //Form 전송
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+
+      const response = await login(email, password);
+
+      if (isRemembered) {
+        // 아이디 저장
+        localStorage.setItem('savedEmail', email);
+      } else {
+        // 아이디 저장하지 않음
+        localStorage.removeItem('savedEmail');
+      }
+
+      setAuthData({
+        token: response.token,
+        email: response.email,
+        nickname: response.nickname,
+        cuid: response.cuid,
+      });
+
+      navigate('/');
+
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
+
+  };
 
   return (
     <>
@@ -132,8 +149,11 @@ export default function SignInPage() {
                     hiddenText="이메일 입력"
                     onChange={handleEmailChange}
                     value={email}
+                    error={emailError}
                   />
+
                   {emailError && <p className="errorMessage">{emailError}</p>}
+
                 </div>
 
                 <div className={style.inputBox}>
@@ -143,8 +163,11 @@ export default function SignInPage() {
                     placeholder="비밀번호 입력"
                     hiddenText="비밀번호 입력"
                     onChange={handlePasswordChange}
+                    error={passwordError}
                   />
+
                   {passwordError && <p className="errorMessage">{passwordError}</p>}
+
                 </div>
 
                 <div className={style.signinFindBox}>
@@ -162,7 +185,7 @@ export default function SignInPage() {
                   </Link>
                 </div>
 
-                {error && <p className="errorMessage">{error}</p>}
+                {/* {error && <p className="errorMessage">{error}</p>} */}
 
                 <Button
                   text="로그인"

@@ -5,8 +5,16 @@ import style from "./Header.module.css"
 import Logo from "../../assets/images/common/logo.svg";
 import ProfileImg from "../../assets/images/common/Profile_Img.svg";
 import Alarm from "../Alarm";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Header() {
+
+  //유저정보 불러오기
+  const { token, email, nickname, cuid } = useAuthStore((state) => {
+    return (
+      state
+    )
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,12 +24,7 @@ export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isalarmOpen, setIsAlarmOpen] = useState(false);
-  const [user] = useState(() => {
-    const userData = localStorage.getItem('user');
-    return userData ? JSON.parse(userData) : null;
-  });
-  
-  // const { user } = useContext(UserContext);
+
   const getActiveClass = (path) => {
     return location.pathname === path ? `${style.active}` : '';
   };
@@ -74,11 +77,11 @@ export default function Header() {
     }
   };
 
-  useEffect(() =>{
+  useEffect(() => {
 
     isSetHeaderAnimation(true);
 
-  },[])
+  }, [])
 
   return (
     <header id={style.headerBox} className={isHeaderAnimation && `${style.active}`}>
@@ -191,7 +194,7 @@ export default function Header() {
             </div>
 
             <div className={style.loginBox}>
-              {user ? (
+              {token ? (
                 <Link to="/mypage">
                   <img src={ProfileImg} alt="프로필이미지" />
                 </Link>  // 사용자 정보가 있으면 마이페이지 링크
@@ -273,7 +276,7 @@ export default function Header() {
           </div>
 
           <div className={style.loginBox}>
-            {user ? (
+            {token ? (
               <Link to="/mypage">
                 <img src={ProfileImg} alt="프로필이미지" />
               </Link>  // 사용자 정보가 있으면 마이페이지 링크
