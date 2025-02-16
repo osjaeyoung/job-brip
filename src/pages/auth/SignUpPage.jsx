@@ -362,7 +362,7 @@ export default function SignUpPage() {
           </div>
         </Container>
       </div>
-      <MailForm/>
+
     </Main>
   );
 }
